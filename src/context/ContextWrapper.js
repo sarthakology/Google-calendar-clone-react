@@ -40,6 +40,7 @@ export default function ContextWrapper(props) {
     initEvents
   );
   const [showSidebar, setShowSidebar] = useState(true);
+  const [calendarEventToggle, setCalendarEventToggle] = useState(true); // true calendar false event
 
   const filteredEvents = useMemo(() => {
     return savedEvents.filter((evt) =>
@@ -108,7 +109,9 @@ export default function ContextWrapper(props) {
         updateLabel,
         filteredEvents,
         showSidebar, 
-        setShowSidebar
+        setShowSidebar,
+        calendarEventToggle, 
+        setCalendarEventToggle
       }}
     >
       {props.children}
