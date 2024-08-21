@@ -39,6 +39,7 @@ export default function ContextWrapper(props) {
     [],
     initEvents
   );
+  const [showSidebar, setShowSidebar] = useState(true);
 
   const filteredEvents = useMemo(() => {
     return savedEvents.filter((evt) =>
@@ -106,6 +107,8 @@ export default function ContextWrapper(props) {
         labels,
         updateLabel,
         filteredEvents,
+        showSidebar, 
+        setShowSidebar
       }}
     >
       {props.children}
