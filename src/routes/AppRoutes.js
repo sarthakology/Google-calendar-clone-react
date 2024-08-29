@@ -20,6 +20,7 @@ import MainSettingsPage from "../settings/MainSettingsPage";
 import TrashPage from "../settings/TrashPage";
 import DensityAndColorPage from "../settings/DensityAndColorPage";
 import GetAddonsPage from "../settings/GetAddonsPage";
+import RegisterPage from "../registerPage/RegisterPage";
 
 const AppRoutes = () => {
   const { monthIndex, showEventModal, calendarEventToggle } = useContext(GlobalContext);
@@ -32,6 +33,13 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
+        {/* register/login routes */}
+        <Route path="/register" element={<RegisterPage/>}/>
+
+
+
+
+
         {/* Home/Calendar Route */}
         <Route path="/" element={
           <>
