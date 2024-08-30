@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Importing axios
 
 export default function RegisterPage() {
@@ -8,23 +8,28 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match');
     } else {
-      const data = { email, password };
+      const formData ={
+        email: email,
+        password: password
+      };
 
-      try {
-        const response = await axios.post('http://localhost:8083/auth/register', data);
-        console.log('Server response:', response.data);
-        setError(response.data)
-        setError('');
-      } catch (error) {
-        console.error('Error during registration:', error.response ? error.response.data : error.message);
-        setError('Registration failed. Please try again.');
-      }
+      axios.post('http://localhost:8083/auth/register', formData)
+      .then(response => {
+        console.log('Data sent successfully');
+        navigate('/login');
+        // Do something with the response if needed
+      })
+      .catch(error => {
+        console.error('Error sending data:', error);
+        setError('Error sending data:', error)
+      });
     }
   };
 

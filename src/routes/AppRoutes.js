@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route, 
-  } 
-  from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; // Correct import
 import CalendarHeader from "../components/CalendarHeader";
 import Sidebar from "../components/Sidebar";
 import Month from "../components/Month";
@@ -21,10 +16,13 @@ import TrashPage from "../settings/TrashPage";
 import DensityAndColorPage from "../settings/DensityAndColorPage";
 import GetAddonsPage from "../settings/GetAddonsPage";
 import RegisterPage from "../registerPage/RegisterPage";
+import LoginPage from "../loginPage/LoginPage";
+import ProfilePage from "../components/ProfilePage";
 
 const AppRoutes = () => {
   const { monthIndex, showEventModal, calendarEventToggle } = useContext(GlobalContext);
-  const [currenMonth, setCurrentMonth] = useState(getMonth());
+  const [currentMonth, setCurrentMonth] = useState(getMonth()); // Correct variable name
+  const token = localStorage.getItem('token'); 
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
@@ -33,54 +31,55 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        {/* register/login routes */}
-        <Route path="/register" element={<RegisterPage/>}/>
+        {/* Register/Login routes */}
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
-
-
-
+        {/* Profile route with conditional redirect */}
+        <Route path="/profile" element={token ? <ProfilePage /> : <Navigate to="/login" />} />
 
         {/* Home/Calendar Route */}
-        <Route path="/" element={
-          <>
-            {showEventModal && <EventModal />}
+        <Route
+          path="/"
+          element={
+            <>
+              {showEventModal && <EventModal />}
+              <div className="h-screen flex flex-col">
+                <CalendarHeader />
+                {calendarEventToggle ? (
+                  <div className="flex flex-1">
+                    <Sidebar />
+                    <Month month={currentMonth} />
+                  </div>
+                ) : (
+                  <EventsPage />
+                )}
+              </div>
+            </>
+          }
+        />
 
-            <div className="h-screen flex flex-col">
-              <CalendarHeader />
-              
-              {calendarEventToggle ? (
-                <div className="flex flex-1">
-                  <Sidebar />
-                  <Month month={currenMonth} />
-                </div>
-              ) : (
-                <EventsPage />
-              )}
+        {/* Support Pages */}
+        <Route path="/help" element={<><CalendarHeader /><HelpPage /></>} />
+        <Route path="/training" element={<><CalendarHeader /><TrainingPage /></>} />
+        <Route path="/updates" element={<><CalendarHeader /><UpdatesPage /></>} />
+        <Route path="/feedback" element={<><CalendarHeader /><SendFeedbackToGooglePage /></>} />
+
+        {/* Settings Pages */}
+        <Route path="/setting" element={<><CalendarHeader /><MainSettingsPage /></>} />
+        <Route path="/trash" element={<><CalendarHeader /><TrashPage /></>} />
+        <Route path="/DensityAndColor" element={<><CalendarHeader /><DensityAndColorPage /></>} />
+        <Route path="/Get-add-ons" element={<><CalendarHeader /><GetAddonsPage /></>} />
+
+        {/* 404 Page */}
+        <Route
+          path="*"
+          element={
+            <div className="flex justify-center items-center h-screen">
+              <h1 className="text-2xl font-bold text-red-500">404 - Page Not Found</h1>
             </div>
-
-
-            
-          </>
-          }/>
-          {/* SupportPages */}
-        <Route path="/help" element={<><CalendarHeader/><HelpPage/> </>}/>
-        <Route path="/training" element={<><CalendarHeader/><TrainingPage/> </>}/>
-        <Route path="/updates" element={<><CalendarHeader /><UpdatesPage/> </>}/>
-        <Route path="/feedback" element={<><CalendarHeader /><SendFeedbackToGooglePage/> </>}/>
-          {/* SettingsPages */}
-        <Route path="/setting" element={<><CalendarHeader /><MainSettingsPage/> </>}/>
-        <Route path="/trash" element={<><CalendarHeader /><TrashPage/> </>}/>
-        <Route path="/DensityAndColor" element={<><CalendarHeader /><DensityAndColorPage/> </>}/>
-        <Route path="/Get-add-ons" element={<><CalendarHeader /><GetAddonsPage/> </>}/>
-
-
-
-        <Route path="*" element={<>
-          <div className="flex justify-center items-center h-screen">
-            <h1 className="text-2xl font-bold text-red-500">404 - Page Not Found</h1>
-          </div>
-        </>}/>
-
+          }
+        />
       </Routes>
     </Router>
   );

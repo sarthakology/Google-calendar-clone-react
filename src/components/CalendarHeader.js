@@ -1,14 +1,22 @@
 import dayjs from "dayjs";
 import React, { useContext, useState } from "react";
 import logo from "../assets/logo.png";
-import profile from "../assets/Default_pfp.jpg"
 import GlobalContext from "../context/GlobalContext";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useProfile from '../profileDataBackend/ProfileData';
 
 export default function CalendarHeader() {
   const { monthIndex, setMonthIndex, showSidebar, setShowSidebar,calendarEventToggle, setCalendarEventToggle } = useContext(GlobalContext);
   const [helpDropdown, setHelpDropdown] = useState(false);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
+  const navigate = useNavigate();
+  const profile = useProfile() || {
+    email: "Error",
+    gender: "Error",
+    name: "Error",
+    phno: 0,
+    profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+  };
 
 
   function handlePrevMonth() {
@@ -160,8 +168,8 @@ export default function CalendarHeader() {
           </button>
         </div>
           <div className="w-full flex justify-center px-2">
-          <button>
-            <img src={profile} alt="calendar" className=" w-12 h-12" />
+          <button onClick={()=>navigate('/profile')}>
+            <img src={profile.profilePicture} alt="calendar" className=" w-12 h-12 rounded-full border-2 border-gray-300" />
           </button>
         </div>
       </div>
