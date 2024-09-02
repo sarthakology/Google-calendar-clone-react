@@ -13,7 +13,7 @@ export default function LoginPage(props) {
 
     try {
       const response = await axios.post(
-        'http://localhost:8083/auth/login',
+        'http://localhost:8083/login',
         { email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );

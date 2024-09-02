@@ -1,14 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import useProfile from '../profileDataBackend/ProfileData';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
-  // Set profile data from your source
   const profile = useProfile() || {
     email: "Error",
     gender: "Error",
     name: "Error",
     phno: 0,
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+  };
+
+  const [name, setName] = useState(profile.name);
+  const [gender, setGender] = useState(profile.gender);
+  const [phno, setPhno] = useState(profile.phno);
+  const [email, setEmail] = useState(profile.email);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setName(profile.name);
+    setGender(profile.gender);
+    setPhno(profile.phno);
+    setEmail(profile.email);
+  }, [profile]);
+
+  const handleSaveChanges = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        const formData = {
+          name,
+          gender,
+          phno,
+          email,
+        };
+
+        await axios.put('http://localhost:8083/edit-profile', formData, {
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+
+        console.log('Profile updated successfully');
+      } else {
+        console.error('No token found');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+    
+    setIsEditing(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   return (
@@ -24,20 +75,72 @@ const ProfilePage = () => {
         <div className="space-y-4">
           <div>
             <span className="block text-sm font-medium text-gray-700">Name:</span>
-            <p className="mt-1 text-gray-900">{profile.name || "N/A"}</p>
+            {isEditing ? (
+              <input 
+                type="text" 
+                className="mt-1 w-full border rounded px-3 py-2"
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+              />
+            ) : (
+              <p className="mt-1 text-gray-900">{name || "N/A"}</p>
+            )}
           </div>
           <div>
             <span className="block text-sm font-medium text-gray-700">Gender:</span>
-            <p className="mt-1 text-gray-900">{profile.gender || "N/A"}</p>
+            {isEditing ? (
+              <select
+                className="mt-1 w-full border rounded px-3 py-2"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            ) : (
+              <p className="mt-1 text-gray-900">{gender || "N/A"}</p>
+            )}
           </div>
           <div>
             <span className="block text-sm font-medium text-gray-700">Phone Number:</span>
-            <p className="mt-1 text-gray-900">{profile.phno || "N/A"}</p>
+            {isEditing ? (
+              <input 
+                type="text" 
+                className="mt-1 w-full border rounded px-3 py-2"
+                value={phno} 
+                onChange={(e) => setPhno(e.target.value)} 
+              />
+            ) : (
+              <p className="mt-1 text-gray-900">{phno || "N/A"}</p>
+            )}
           </div>
           <div>
             <span className="block text-sm font-medium text-gray-700">Email:</span>
-            <p className="mt-1 text-gray-900">{profile.email}</p>
+            {isEditing ? (
+              <input 
+                type="text" 
+                className="mt-1 w-full border rounded px-3 py-2"
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+              />
+            ) : (
+              <p className="mt-1 text-gray-900">{email || "N/A"}</p>
+            )}
           </div>
+          <button 
+            className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
+            onClick={() => isEditing ? handleSaveChanges() : setIsEditing(true)}
+          >
+            {isEditing ? 'Save Changes' : 'Edit Profile'}
+          </button>
+          <button 
+            className="mt-4 w-full bg-red-500 text-white py-2 rounded"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>

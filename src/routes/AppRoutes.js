@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; // Correct import
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import CalendarHeader from "../components/CalendarHeader";
 import Sidebar from "../components/Sidebar";
 import Month from "../components/Month";
@@ -21,22 +21,32 @@ import ProfilePage from "../components/ProfilePage";
 
 const AppRoutes = () => {
   const { monthIndex, showEventModal, calendarEventToggle } = useContext(GlobalContext);
-  const [currentMonth, setCurrentMonth] = useState(getMonth()); // Correct variable name
-  const token = localStorage.getItem('token'); 
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
   }, [monthIndex]);
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    setToken(storedToken);
+  }, []);
+
   return (
     <Router>
+      {/* Always display the CalendarHeader component */}
+      <CalendarHeader />
       <Routes>
-        {/* Register/Login routes */}
+        {/* Register and Login routes */}
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Profile route with conditional redirect */}
-        <Route path="/profile" element={token ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route 
+          path="/profile" 
+          element={token ? <ProfilePage /> : <Navigate to="/login" />} 
+        />
 
         {/* Home/Calendar Route */}
         <Route
@@ -45,7 +55,6 @@ const AppRoutes = () => {
             <>
               {showEventModal && <EventModal />}
               <div className="h-screen flex flex-col">
-                <CalendarHeader />
                 {calendarEventToggle ? (
                   <div className="flex flex-1">
                     <Sidebar />
@@ -60,16 +69,16 @@ const AppRoutes = () => {
         />
 
         {/* Support Pages */}
-        <Route path="/help" element={<><CalendarHeader /><HelpPage /></>} />
-        <Route path="/training" element={<><CalendarHeader /><TrainingPage /></>} />
-        <Route path="/updates" element={<><CalendarHeader /><UpdatesPage /></>} />
-        <Route path="/feedback" element={<><CalendarHeader /><SendFeedbackToGooglePage /></>} />
+        <Route path="/help" element={<HelpPage />} />
+        <Route path="/training" element={<TrainingPage />} />
+        <Route path="/updates" element={<UpdatesPage />} />
+        <Route path="/feedback" element={<SendFeedbackToGooglePage />} />
 
         {/* Settings Pages */}
-        <Route path="/setting" element={<><CalendarHeader /><MainSettingsPage /></>} />
-        <Route path="/trash" element={<><CalendarHeader /><TrashPage /></>} />
-        <Route path="/DensityAndColor" element={<><CalendarHeader /><DensityAndColorPage /></>} />
-        <Route path="/Get-add-ons" element={<><CalendarHeader /><GetAddonsPage /></>} />
+        <Route path="/setting" element={<MainSettingsPage />} />
+        <Route path="/trash" element={<TrashPage />} />
+        <Route path="/DensityAndColor" element={<DensityAndColorPage />} />
+        <Route path="/Get-add-ons" element={<GetAddonsPage />} />
 
         {/* 404 Page */}
         <Route

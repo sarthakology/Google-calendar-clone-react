@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import logo from "../assets/logo.png";
 import GlobalContext from "../context/GlobalContext";
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +17,11 @@ export default function CalendarHeader() {
     phno: 0,
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
   };
+  const [profilePicture, setProfilePicture] = useState(profile.profilePicture)
+
+  useEffect(() => {
+    setProfilePicture(profile.profilePicture);
+  }, [profile]);
 
 
   function handlePrevMonth() {
@@ -169,7 +174,7 @@ export default function CalendarHeader() {
         </div>
           <div className="w-full flex justify-center px-2">
           <button onClick={()=>navigate('/profile')}>
-            <img src={profile.profilePicture} alt="calendar" className=" w-12 h-12 rounded-full border-2 border-gray-300" />
+            <img src={profilePicture} alt="calendar" className=" w-12 h-12 rounded-full border-2 border-gray-300" />
           </button>
         </div>
       </div>

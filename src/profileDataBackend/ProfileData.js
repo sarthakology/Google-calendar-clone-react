@@ -11,7 +11,7 @@ const useProfile = () => {
         const token = localStorage.getItem('token'); // Retrieve the token from local storage
 
         if (token) {
-          const response = await axios.get('http://localhost:8083/auth/user', {
+          const response = await axios.get('http://localhost:8083/user', {
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}` // Include the token in the Authorization header

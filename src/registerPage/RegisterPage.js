@@ -20,7 +20,7 @@ export default function RegisterPage() {
         password: password
       };
 
-      axios.post('http://localhost:8083/auth/register', formData)
+      axios.post('http://localhost:8083/register', formData)
       .then(response => {
         console.log('Data sent successfully');
         navigate('/login');
