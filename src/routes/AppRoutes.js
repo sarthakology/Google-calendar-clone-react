@@ -22,30 +22,47 @@ import ProfilePage from "../components/ProfilePage";
 const AppRoutes = () => {
   const { monthIndex, showEventModal, calendarEventToggle } = useContext(GlobalContext);
   const [currentMonth, setCurrentMonth] = useState(getMonth());
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
 
   useEffect(() => {
     setCurrentMonth(getMonth(monthIndex));
   }, [monthIndex]);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    setToken(storedToken);
+    // Update the access token in real time when localStorage changes
+    const handleStorageChange = () => {
+      setAccessToken(localStorage.getItem("accessToken"));
+    };
+
+    // Listen for changes to localStorage
+    window.addEventListener("storage", handleStorageChange);
+
+    // Also check periodically for changes
+    const checkTokenInterval = setInterval(handleStorageChange, 500);
+
+    // Cleanup event listener and interval on component unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(checkTokenInterval);
+    };
   }, []);
 
   return (
     <Router>
-      {/* Always display the CalendarHeader component */}
-      <CalendarHeader />
       <Routes>
-        {/* Register and Login routes */}
+        {/* Register/Login routes */}
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* Profile route with conditional redirect */}
         <Route 
           path="/profile" 
-          element={token ? <ProfilePage /> : <Navigate to="/login" />} 
+          element={
+            <>
+              <CalendarHeader />
+              {accessToken ? <ProfilePage /> : <Navigate to="/login" />}
+            </>
+          } 
         />
 
         {/* Home/Calendar Route */}
@@ -55,6 +72,7 @@ const AppRoutes = () => {
             <>
               {showEventModal && <EventModal />}
               <div className="h-screen flex flex-col">
+                <CalendarHeader />
                 {calendarEventToggle ? (
                   <div className="flex flex-1">
                     <Sidebar />
@@ -69,16 +87,16 @@ const AppRoutes = () => {
         />
 
         {/* Support Pages */}
-        <Route path="/help" element={<HelpPage />} />
-        <Route path="/training" element={<TrainingPage />} />
-        <Route path="/updates" element={<UpdatesPage />} />
-        <Route path="/feedback" element={<SendFeedbackToGooglePage />} />
+        <Route path="/help" element={<><CalendarHeader /><HelpPage /></>} />
+        <Route path="/training" element={<><CalendarHeader /><TrainingPage /></>} />
+        <Route path="/updates" element={<><CalendarHeader /><UpdatesPage /></>} />
+        <Route path="/feedback" element={<><CalendarHeader /><SendFeedbackToGooglePage /></>} />
 
         {/* Settings Pages */}
-        <Route path="/setting" element={<MainSettingsPage />} />
-        <Route path="/trash" element={<TrashPage />} />
-        <Route path="/DensityAndColor" element={<DensityAndColorPage />} />
-        <Route path="/Get-add-ons" element={<GetAddonsPage />} />
+        <Route path="/setting" element={<><CalendarHeader /><MainSettingsPage /></>} />
+        <Route path="/trash" element={<><CalendarHeader /><TrashPage /></>} />
+        <Route path="/DensityAndColor" element={<><CalendarHeader /><DensityAndColorPage /></>} />
+        <Route path="/Get-add-ons" element={<><CalendarHeader /><GetAddonsPage /></>} />
 
         {/* 404 Page */}
         <Route

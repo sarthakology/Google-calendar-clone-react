@@ -10,6 +10,7 @@ export default function CalendarHeader() {
   const [helpDropdown, setHelpDropdown] = useState(false);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
   const navigate = useNavigate();
+  
   const profile = useProfile() || {
     email: "Error",
     gender: "Error",
@@ -21,7 +22,7 @@ export default function CalendarHeader() {
 
   useEffect(() => {
     setProfilePicture(profile.profilePicture);
-  }, [profile]);
+  }, [profile.profilePicture]);
 
 
   function handlePrevMonth() {

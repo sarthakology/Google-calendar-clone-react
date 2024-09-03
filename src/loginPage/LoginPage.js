@@ -18,10 +18,10 @@ export default function LoginPage(props) {
         { headers: { 'Content-Type': 'application/json' } }
       );
 
-      if (response.data.message === 'success' && response.data.token) {
+      if (response.data.accessToken) {
         setMessage('Login successful!');
-        localStorage.setItem('token', response.data.token);
-        navigate('/'); // Navigate to the home page
+        localStorage.setItem('accessToken', response.data.accessToken);
+        navigate('/');
       } else {
         setMessage('An unexpected error occurred.');
       }

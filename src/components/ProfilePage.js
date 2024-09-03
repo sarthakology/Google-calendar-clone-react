@@ -29,9 +29,9 @@ const ProfilePage = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const accessToken = localStorage.getItem('accessToken');
 
-      if (token) {
+      if (accessToken) {
         const formData = {
           name,
           gender,
@@ -42,13 +42,13 @@ const ProfilePage = () => {
         await axios.put('http://localhost:8083/edit-profile', formData, {
           headers: { 
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${accessToken}`
           },
         });
 
         console.log('Profile updated successfully');
       } else {
-        console.error('No token found');
+        console.error('No accessToken found');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -58,7 +58,7 @@ const ProfilePage = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
     navigate('/');
   };
 
