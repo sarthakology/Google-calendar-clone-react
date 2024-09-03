@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import useProfile from '../profileDataBackend/ProfileData';
 import { useNavigate } from 'react-router-dom';
+import { uploadFileToFirebase } from "../firebase/firebaseUpload";
 
 const ProfilePage = () => {
   const profile = useProfile() || {
@@ -17,6 +17,8 @@ const ProfilePage = () => {
   const [phno, setPhno] = useState(profile.phno);
   const [email, setEmail] = useState(profile.email);
   const [isEditing, setIsEditing] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(profile.profilePicture);
+  const [imageUpload, setImageUpload] = useState(null);
 
   const navigate = useNavigate();
 
@@ -25,35 +27,22 @@ const ProfilePage = () => {
     setGender(profile.gender);
     setPhno(profile.phno);
     setEmail(profile.email);
+    setProfilePicture(profile.profilePicture);
   }, [profile]);
 
   const handleSaveChanges = async () => {
-    try {
-      const accessToken = localStorage.getItem('accessToken');
-
-      if (accessToken) {
-        const formData = {
-          name,
-          gender,
-          phno,
-          email,
-        };
-
-        await axios.put('http://localhost:8083/edit-profile', formData, {
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-          },
-        });
-
-        console.log('Profile updated successfully');
-      } else {
-        console.error('No accessToken found');
-      }
-    } catch (error) {
-      console.error('Error updating profile:', error);
+    if (imageUpload) {
+      await uploadFileToFirebase(
+        imageUpload,
+        name,
+        gender,
+        phno,
+        email
+      );
+      // After uploading, you may want to update the profilePicture state with the new URL
+      // const newProfilePictureUrl = await getImageUrlFromFirebase(); // Implement this function to get the new URL
+      // setProfilePicture(newProfilePictureUrl);
     }
-    
     setIsEditing(false);
   };
 
@@ -65,22 +54,45 @@ const ProfilePage = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <div className="flex justify-center mb-4">
-          <img 
-            src={profile.profilePicture} 
-            alt="Profile" 
-            className="w-24 h-24 rounded-full border-2 border-gray-300" 
+        <div className="relative flex justify-center mb-4">
+        {isEditing ? (
+          <>
+          <img
+            src={imageUpload ? URL.createObjectURL(imageUpload) : profilePicture}
+            alt="Profile"
+            className="w-24 h-24 rounded-full border-2 border-gray-300 cursor-pointer"
+            onClick={() => document.getElementById('fileInput').click()} // Trigger file input click on image click
           />
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*" // Only accept image files
+            onChange={async (event) => {
+              const file = event.target.files[0];
+              setImageUpload(file);
+              await uploadFileToFirebase(file, name, gender, phno, email); // Await file upload
+            }}
+            className="absolute inset-0 opacity-0 cursor-pointer" // Hide the file input but keep it functional
+          />
+          </>
+        ) : (
+          <img
+          src={imageUpload ? URL.createObjectURL(imageUpload) : profilePicture}
+          alt="Profile"
+          className="w-24 h-24 rounded-full border-2 border-gray-300"
+        />
+
+        )}
         </div>
         <div className="space-y-4">
           <div>
             <span className="block text-sm font-medium text-gray-700">Name:</span>
             {isEditing ? (
-              <input 
-                type="text" 
+              <input
+                type="text"
                 className="mt-1 w-full border rounded px-3 py-2"
-                value={name} 
-                onChange={(e) => setName(e.target.value)} 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             ) : (
               <p className="mt-1 text-gray-900">{name || "N/A"}</p>
@@ -106,11 +118,11 @@ const ProfilePage = () => {
           <div>
             <span className="block text-sm font-medium text-gray-700">Phone Number:</span>
             {isEditing ? (
-              <input 
-                type="text" 
+              <input
+                type="text"
                 className="mt-1 w-full border rounded px-3 py-2"
-                value={phno} 
-                onChange={(e) => setPhno(e.target.value)} 
+                value={phno}
+                onChange={(e) => setPhno(e.target.value)}
               />
             ) : (
               <p className="mt-1 text-gray-900">{phno || "N/A"}</p>
@@ -119,23 +131,24 @@ const ProfilePage = () => {
           <div>
             <span className="block text-sm font-medium text-gray-700">Email:</span>
             {isEditing ? (
-              <input 
-                type="text" 
+              <input
+                type="text"
                 className="mt-1 w-full border rounded px-3 py-2"
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             ) : (
               <p className="mt-1 text-gray-900">{email || "N/A"}</p>
             )}
           </div>
-          <button 
+          <button
             className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
             onClick={() => isEditing ? handleSaveChanges() : setIsEditing(true)}
           >
             {isEditing ? 'Save Changes' : 'Edit Profile'}
           </button>
-          <button 
+
+          <button
             className="mt-4 w-full bg-red-500 text-white py-2 rounded"
             onClick={handleLogout}
           >
