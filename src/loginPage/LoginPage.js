@@ -21,6 +21,7 @@ export default function LoginPage(props) {
       if (response.data.accessToken) {
         setMessage('Login successful!');
         localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
         navigate('/');
       } else {
         setMessage('An unexpected error occurred.');
