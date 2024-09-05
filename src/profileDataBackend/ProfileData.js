@@ -18,8 +18,6 @@ const useProfile = () => {
             },
           });
           setProfile(response.data); // Set the fetched profile data to state
-        } else {
-          console.error('No accessToken found');
         }
       } catch (error) {
         

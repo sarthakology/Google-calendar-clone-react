@@ -3,16 +3,13 @@ import axios from 'axios';
 const refreshJWTToken = async () => {
   try {
     const refreshToken = localStorage.getItem('refreshToken');
-    if (!refreshToken) {
-      throw new Error('No refresh token available');
+    if (refreshToken) {
+          const response = await axios.post('http://localhost:8083/token', { refreshToken: refreshToken });
+      
+          const newAccessToken = response.data.accessToken;
+          localStorage.setItem('accessToken', newAccessToken);
+          return newAccessToken;
     }
-
-    const response = await axios.post('http://localhost:8083/token', { refreshToken: refreshToken });
-
-    const newAccessToken = response.data.accessToken;
-    localStorage.setItem('accessToken', newAccessToken);
-    console.log("token refreshed")
-    return newAccessToken;
 
 
   } catch (error) {

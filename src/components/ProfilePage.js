@@ -13,9 +13,8 @@ const ProfilePage = () => {
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
   };
 
-  //baad me isko bhi banaa h 
+
   const loading = useProfile()
-  const error = useProfile()
 
   const [name, setName] = useState(profile.name);
   const [gender, setGender] = useState(profile.gender);
@@ -64,12 +63,15 @@ const ProfilePage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    console.log('User logged out');
     navigate('/');
   };
+  
+    //baad me isko bhi banaa h 
   if(!loading) return (
     <h1>loading profile please wait...</h1>
   )
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
