@@ -1,15 +1,16 @@
 import React from "react";
 
+// Default values for the global context, including loader state
 const GlobalContext = React.createContext({
   monthIndex: 0,
-  setMonthIndex: (index) => {},
+  setMonthIndex: () => {},
   smallCalendarMonth: 0,
-  setSmallCalendarMonth: (index) => {},
+  setSmallCalendarMonth: () => {},
   daySelected: null,
-  setDaySelected: (day) => {},
+  setDaySelected: () => {},
   showEventModal: false,
   setShowEventModal: () => {},
-  dispatchCalEvent: ({ type, payload }) => {},
+  dispatchCalEvent: () => {},
   savedEvents: [],
   selectedEvent: null,
   setSelectedEvent: () => {},
@@ -17,6 +18,12 @@ const GlobalContext = React.createContext({
   labels: [],
   updateLabel: () => {},
   filteredEvents: [],
+  showSidebar: true,
+  setShowSidebar: () => {},
+  calendarEventToggle: true,
+  setCalendarEventToggle: () => {},
+  loader: false, // Adding loader state
+  setLoader: () => {}, // Adding function to set loader
 });
 
 export default GlobalContext;

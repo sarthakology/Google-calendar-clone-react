@@ -18,9 +18,10 @@ import GetAddonsPage from "../settings/GetAddonsPage";
 import RegisterPage from "../registerPage/RegisterPage";
 import LoginPage from "../loginPage/LoginPage";
 import ProfilePage from "../components/ProfilePage";
+import Loader from "../components/Loader"; // Import Loader component
 
 const AppRoutes = () => {
-  const { monthIndex, showEventModal, calendarEventToggle } = useContext(GlobalContext);
+  const { monthIndex, showEventModal, calendarEventToggle, loader, setLoader } = useContext(GlobalContext);
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
 
@@ -29,26 +30,37 @@ const AppRoutes = () => {
   }, [monthIndex]);
 
   useEffect(() => {
-    // Update the access token in real time when localStorage changes
-    const handleStorageChange = () => {
-      setAccessToken(localStorage.getItem("accessToken"));
-    };
+    // Show loader when accessing the token
+    setLoader(true); // Start loader before token is fetched
 
-    // Listen for changes to localStorage
-    window.addEventListener("storage", handleStorageChange);
+    // Simulate async token fetch
+    setTimeout(() => {
+      const handleStorageChange = () => {
+        setAccessToken(localStorage.getItem("accessToken"));
+      };
 
-    // Also check periodically for changes
-    const checkTokenInterval = setInterval(handleStorageChange, 500);
+      // Listen for changes to localStorage
+      window.addEventListener("storage", handleStorageChange);
 
-    // Cleanup event listener and interval on component unmount
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      clearInterval(checkTokenInterval);
-    };
-  }, []);
+      // Also check periodically for changes
+      const checkTokenInterval = setInterval(handleStorageChange, 500);
+
+      // Hide loader after the token is fetched or checked
+      setLoader(false);
+
+      // Cleanup event listener and interval on component unmount
+      return () => {
+        window.removeEventListener("storage", handleStorageChange);
+        clearInterval(checkTokenInterval);
+      };
+    }, 1000); // Simulate delay (e.g., API call delay or token validation)
+  }, [setLoader]);
 
   return (
     <Router>
+      {/* Show Loader if loader state is true */}
+      {loader && <Loader />}
+
       <Routes>
         {/* Register/Login routes */}
         <Route path="/register" element={<RegisterPage />} />

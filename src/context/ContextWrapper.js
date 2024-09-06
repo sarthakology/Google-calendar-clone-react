@@ -1,47 +1,41 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
 import GlobalContext from "./GlobalContext";
 import dayjs from "dayjs";
 
+// Reducer for handling event-related actions
 function savedEventsReducer(state, { type, payload }) {
   switch (type) {
     case "push":
       return [...state, payload];
     case "update":
-      return state.map((evt) =>
-        evt.id === payload.id ? payload : evt
-      );
+      return state.map((evt) => (evt.id === payload.id ? payload : evt));
     case "delete":
       return state.filter((evt) => evt.id !== payload.id);
     default:
-      throw new Error();
+      throw new Error("Invalid action type");
   }
 }
+
+// Initialize events from localStorage
 function initEvents() {
   const storageEvents = localStorage.getItem("savedEvents");
-  const parsedEvents = storageEvents ? JSON.parse(storageEvents) : [];
-  return parsedEvents;
+  return storageEvents ? JSON.parse(storageEvents) : [];
 }
 
-export default function ContextWrapper(props) {
+export default function ContextWrapper({ children }) {
   const [monthIndex, setMonthIndex] = useState(dayjs().month());
   const [smallCalendarMonth, setSmallCalendarMonth] = useState(null);
   const [daySelected, setDaySelected] = useState(dayjs());
   const [showEventModal, setShowEventModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [labels, setLabels] = useState([]);
-  const [savedEvents, dispatchCalEvent] = useReducer(
-    savedEventsReducer,
-    [],
-    initEvents
-  );
+  const [savedEvents, dispatchCalEvent] = useReducer(savedEventsReducer, [], initEvents);
   const [showSidebar, setShowSidebar] = useState(true);
-  const [calendarEventToggle, setCalendarEventToggle] = useState(true); // true calendar false event
+  const [calendarEventToggle, setCalendarEventToggle] = useState(true); // true: calendar view, false: event view
 
+  const [loader, setLoader] = useState(false); // State for loader
+
+  // Filter events based on selected labels
   const filteredEvents = useMemo(() => {
     return savedEvents.filter((evt) =>
       labels
@@ -51,38 +45,39 @@ export default function ContextWrapper(props) {
     );
   }, [savedEvents, labels]);
 
+  // Sync saved events with localStorage
   useEffect(() => {
     localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
   }, [savedEvents]);
 
+  // Update labels whenever saved events change
   useEffect(() => {
     setLabels((prevLabels) => {
-      return [...new Set(savedEvents.map((evt) => evt.label))].map(
-        (label) => {
-          const currentLabel = prevLabels.find(
-            (lbl) => lbl.label === label
-          );
-          return {
-            label,
-            checked: currentLabel ? currentLabel.checked : true,
-          };
-        }
-      );
+      return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
+        const currentLabel = prevLabels.find((lbl) => lbl.label === label);
+        return {
+          label,
+          checked: currentLabel ? currentLabel.checked : true,
+        };
+      });
     });
   }, [savedEvents]);
 
+  // Set month index if small calendar month is selected
   useEffect(() => {
     if (smallCalendarMonth !== null) {
       setMonthIndex(smallCalendarMonth);
     }
   }, [smallCalendarMonth]);
 
+  // Reset selected event when event modal closes
   useEffect(() => {
     if (!showEventModal) {
       setSelectedEvent(null);
     }
   }, [showEventModal]);
 
+  // Update label checkboxes
   function updateLabel(label) {
     setLabels(
       labels.map((lbl) => (lbl.label === label.label ? label : lbl))
@@ -108,13 +103,15 @@ export default function ContextWrapper(props) {
         labels,
         updateLabel,
         filteredEvents,
-        showSidebar, 
+        showSidebar,
         setShowSidebar,
-        calendarEventToggle, 
-        setCalendarEventToggle
+        calendarEventToggle,
+        setCalendarEventToggle,
+        loader,  // Provide loader state to context
+        setLoader,  // Provide function to set loader state
       }}
     >
-      {props.children}
+      {children}
     </GlobalContext.Provider>
   );
 }
