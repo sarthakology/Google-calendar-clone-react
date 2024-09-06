@@ -49,7 +49,7 @@ const ProfilePage = () => {
         }, setLoader);
       }
 
-      const accessToken = await refreshJWTToken();
+      const accessToken = await refreshJWTToken(navigate);
       if (accessToken) {
         const formData = {
           name,

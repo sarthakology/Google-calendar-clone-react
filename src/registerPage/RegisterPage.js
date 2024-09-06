@@ -24,7 +24,6 @@ export default function RegisterPage() {
       .then(response => {
         console.log('Data sent successfully');
         navigate('/login');
-        // Do something with the response if needed
       })
       .catch(error => {
         console.error('Error sending data:', error);
