@@ -1,33 +1,34 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Importing axios
+import axios from 'axios';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
     } else {
       const formData ={
         email: email,
         password: password
       };
 
-      axios.post('http://localhost:8083/register', formData)
+      axios.post('http://localhost:8083/auth/register', formData)
       .then(response => {
-        console.log('Data sent successfully');
+        toast.success('Success! You are Registered');
         navigate('/login');
       })
       .catch(error => {
-        console.error('Error sending data:', error);
-        setError('Error sending data:', error)
+        toast.error('Error Registering User:', error);
       });
     }
   };
@@ -83,7 +84,6 @@ export default function RegisterPage() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   required
                 />
-                {error && <p className="text-sm text-red-600">{error}</p>}
               </div>
               <div className="flex items-start">
                 <div className="flex items-center h-5">

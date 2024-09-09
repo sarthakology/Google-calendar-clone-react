@@ -11,7 +11,7 @@ const useProfile = () => {
         const accessToken = await refreshJWTToken(); // Retrieve the accessToken from local storage
         
         if (accessToken) {
-          const response = await axios.get('http://localhost:8083/user', {
+          const response = await axios.get('http://localhost:8083/auth/get/user', {
             headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${accessToken}` // Include the accessToken in the Authorization header

@@ -6,6 +6,10 @@ import refreshJWTToken from '../services/RefreshJWTToken';
 import GlobalContext from "../context/GlobalContext";
 import { uploadFileToFirebase } from "../firebase/FirebaseUpload";
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const ProfilePage = () => {
   const profile = useProfile() || {
     email: "Error",
@@ -56,20 +60,24 @@ const ProfilePage = () => {
           gender,
           phno,
           email,
-          imgURL: uploadedImageURL // Use the URL of the uploaded image
+          profilePicture: uploadedImageURL // Use the URL of the uploaded image
         };
-        await axios.put('http://localhost:8083/edit-profile', formData, {
+        await axios.put('http://localhost:8083/auth/update/user', formData, {
           headers: { 
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
           },
         });
         console.log('Profile updated successfully');
+        toast.success('Success! Profile updated successfully!');
       } else {
         console.error('No accessToken found');
+        toast.error('No accessToken found');
       }
     } catch (error) {
       console.error('Error updating profile:', error);
+      toast.error('Error updating profile:', error);
+
     } finally {
       setIsEditing(false);
       setLoader(false);
@@ -79,7 +87,7 @@ const ProfilePage = () => {
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    console.log('User logged out');
+    toast.success('Success! logged out!');
     navigate('/');
   };
 

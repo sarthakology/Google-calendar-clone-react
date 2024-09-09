@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function LoginPage(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const submitData = async (e) => {
@@ -13,22 +15,21 @@ export default function LoginPage(props) {
 
     try {
       const response = await axios.post(
-        'http://localhost:8083/login',
+        'http://localhost:8083/auth/token',
         { email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );
 
       if (response.data.accessToken) {
-        console.log('Login successful!');
+        toast.success('Success! Login successful!!');
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
         navigate('/');
       } else {
-        setMessage('This user does not exist');
+        toast.error('Error! This user does not exist!');
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      setMessage('Error occurred while logging in. Please try again.');
+      toast.error('Error occurred while logging in. Please try again.',error);
     }
   };
 
@@ -77,7 +78,6 @@ export default function LoginPage(props) {
               >
                 Login
               </button>
-              {message && <p className="text-sm text-red-600">{message}</p>}
               <p className="text-sm font-light text-gray-500">
                 Don't have an account? <Link to="/register" className="font-medium text-primary-600 hover:underline">Sign up here</Link>
               </p>
