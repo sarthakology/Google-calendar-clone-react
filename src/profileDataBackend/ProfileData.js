@@ -26,7 +26,7 @@ const useProfile = () => {
     };
 
     fetchUserProfile();
-  }, []); // Empty dependency array to run only on component mount
+  }, []);
   return profile;
 };
 
