@@ -1,0 +1,33 @@
+import axios from 'axios';
+import refreshJWTToken from './RefreshJWTToken';
+
+const saveEvent = async (props) => {
+    try {
+        const accessToken = await refreshJWTToken();
+        const savedEvents = props
+        console.log(savedEvents);
+
+        if (!savedEvents || !Array.isArray(savedEvents)) {
+            throw new Error('No valid saved events found in localStorage');
+        }
+
+        const response = await axios.put('http://localhost:8083/auth/save-event', savedEvents, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        if (response.status === 200) {
+            console.log('Events saved successfully:', response.data);
+            localStorage.removeItem('savedEvents');
+            // add logic here 
+        } else {
+            console.error('Error saving events:', response.data.message);
+        }
+    } catch (error) {
+        console.error('An error occurred while saving events:', error);
+    }
+};
+
+export default saveEvent;

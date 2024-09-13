@@ -4,7 +4,7 @@ import refreshJWTToken from '../services/RefreshJWTToken';
 
 const useProfile = () => {
   const [profile, setProfile] = useState(null);
-
+  
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {

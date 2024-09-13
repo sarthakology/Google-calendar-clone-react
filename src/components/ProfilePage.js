@@ -3,6 +3,7 @@ import axios from 'axios';
 import useProfile from '../profileDataBackend/ProfileData';
 import { useNavigate } from 'react-router-dom';
 import refreshJWTToken from '../services/RefreshJWTToken';
+import saveEvent from '../services/SaveEvent'
 import GlobalContext from "../context/GlobalContext";
 import { uploadFileToFirebase } from "../firebase/FirebaseUpload";
 
@@ -29,7 +30,7 @@ const ProfilePage = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imgURL, setImgURL] = useState(profile.profilePicture);
 
-  const { setLoader } = useContext(GlobalContext);
+  const { setLoader, savedEvents, dispatchCalEvent } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,12 +85,23 @@ const ProfilePage = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    toast.success('Success! logged out!');
-    navigate('/');
-  };
+  const handleLogout = async () => {
+    setLoader(true);
+
+    try {
+      await saveEvent(savedEvents);
+    } catch (error) {
+      console.error('Error during logout:', error);
+      toast.error('An error occurred while logging out.');
+    } finally {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      toast.success('Successfully logged out!');
+      dispatchCalEvent({ type: 'deleteAll' });
+      setLoader(false);
+      navigate('/');
+    }
+};
 
   if (!loading) return <h1>Loading profile, please wait...</h1>;
 
