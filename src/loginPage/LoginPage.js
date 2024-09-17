@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [eventsFetched, setEventsFetched] = useState(false); // State to track if fetchAndDispatchEvents has been executed
+  const [eventsFetched, setEventsFetched] = useState(false);
   const navigate = useNavigate();
   const { dispatchCalEvent } = useContext(GlobalContext);
 
@@ -24,20 +24,16 @@ export default function LoginPage() {
       );
 
       if (response.data.accessToken) {
-        // Store tokens in localStorage
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
 
-        // Show success message
         toast.success('Success! Login successful!!');
 
-        // Fetch and dispatch events only if it hasn't been done before
         if (!eventsFetched) {
           await fetchAndDispatchEvents();
-          setEventsFetched(true); // Mark as fetched
+          setEventsFetched(true);
         }
 
-        // Navigate to home page
         navigate('/');
       } else {
         toast.error('Error! This user does not exist!');
@@ -48,23 +44,21 @@ export default function LoginPage() {
     }
   };
 
-  // Fetch user events and dispatch them to calendar
   const fetchAndDispatchEvents = async () => {
     try {
-      const accessToken = await refreshJWTToken(); // Retrieve the accessToken
+      const accessToken = await refreshJWTToken();
 
       if (accessToken) {
         const response = await axios.get('http://localhost:8083/auth/get/user', {
           headers: { 
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}` // Include the accessToken in the Authorization header
+            'Authorization': `Bearer ${accessToken}` 
           },
         });
         
-        // Dispatch the saved events to the calendar
         const savedEvents = response.data.savedEvents || [];
         savedEvents.forEach(event => {
-          dispatchCalEvent({ type: "push", payload: event }); // Dispatch each event to the calendar
+          dispatchCalEvent({ type: "push", payload: event });
         });
       }
     } catch (error) {
