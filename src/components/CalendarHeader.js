@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import React, { useContext, useState, useEffect } from "react";
-import logo from "../assets/logo.png";
 import GlobalContext from "../context/GlobalContext";
 import { Link, useNavigate } from 'react-router-dom';
 import useProfile from '../profileDataBackend/ProfileData';
@@ -63,8 +62,8 @@ export default function CalendarHeader() {
         </span>
       </button>
       <Link to="/" className="flex items-center px-2">
-        <img src={logo} alt="calendar" className="mr-2 w-12 h-12" />
-        <h1 className="text-xl text-gray-500 font-bold">Calendar</h1>
+        <img src='https://upload.wikimedia.org/wikipedia/en/d/db/C-DAC_LogoTransp.png' alt="calendar" className="mr-2 h-12" />
+        {/* <h1 className="text-xl text-gray-500 font-bold">Calendar</h1> */}
       </Link>
       <button onClick={handleReset} className="border rounded py-2 px-4 mr-5">
         Today
