@@ -1,26 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useMemo, useContext } from 'react';
 import axios from 'axios';
 import useProfile from '../profileDataBackend/ProfileData';
 import { useNavigate } from 'react-router-dom';
 import refreshJWTToken from '../services/RefreshJWTToken';
-import saveEvent from '../services/SaveEvent'
+import saveEvent from '../services/SaveEvent';
 import GlobalContext from "../context/GlobalContext";
 import { uploadFileToFirebase } from "../firebase/FirebaseUpload";
-
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const ProfilePage = () => {
-  const profile = useProfile() || {
+  const profileData = useProfile();
+  
+  // Memoize profile data
+  const profile = useMemo(() => profileData || {
     email: "Error",
     gender: "Error",
     name: "Error",
     phno: 0,
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
-  };
+  }, [profileData]);
 
-  const loading = useProfile();
   const [name, setName] = useState(profile.name);
   const [gender, setGender] = useState(profile.gender);
   const [phno, setPhno] = useState(profile.phno);
@@ -39,7 +39,7 @@ const ProfilePage = () => {
     setPhno(profile.phno);
     setEmail(profile.email);
     setProfilePicture(profile.profilePicture);
-    setImgURL(profile.profilePicture)
+    setImgURL(profile.profilePicture);
   }, [profile]);
 
   const handleSaveChanges = async () => {
@@ -78,7 +78,6 @@ const ProfilePage = () => {
     } catch (error) {
       console.error('Error updating profile:', error);
       toast.error('Error updating profile:', error);
-
     } finally {
       setIsEditing(false);
       setLoader(false);
@@ -94,6 +93,7 @@ const ProfilePage = () => {
       console.error('Error during logout:', error);
       toast.error('An error occurred while logging out.');
     } finally {
+      localStorage.removeItem('savedEvents');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       toast.success('Successfully logged out!');
@@ -101,9 +101,9 @@ const ProfilePage = () => {
       setLoader(false);
       navigate('/');
     }
-};
+  };
 
-  if (!loading) return <h1>Loading profile, please wait...</h1>;
+  if (!profileData) return <h1>Loading profile, please wait...</h1>;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

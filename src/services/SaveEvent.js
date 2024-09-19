@@ -20,8 +20,6 @@ const saveEvent = async (props) => {
 
         if (response.status === 200) {
             console.log('Events saved successfully:', response.data);
-            localStorage.removeItem('savedEvents');
-            // add logic here 
         } else {
             console.error('Error saving events:', response.data.message);
         }
