@@ -1,24 +1,35 @@
 import axios from 'axios';
 import refreshJWTToken from './RefreshJWTToken';
+import { toast } from 'react-toastify';
 
 const saveEvent = async (props) => {
     try {
         const accessToken = await refreshJWTToken();
-        const savedEvents = props
+
+        if (!accessToken) {
+            return;
+        }
+
+        const savedEvents = props;
 
         if (!savedEvents || !Array.isArray(savedEvents)) {
             throw new Error('No valid saved events found in localStorage');
         }
 
-        const response = await axios.put('http://localhost:8083/auth/save-event', savedEvents, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
+        const response = await axios.put(
+            'http://localhost:8083/auth/save-event',
+            savedEvents,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
             }
-        });
+        );
 
         if (response.status === 200) {
-            console.log('Events saved successfully:', response.data);
+            toast.success('Success! Data live updated to server');
+            // console.log('Events saved successfully:', response.data);
         } else {
             console.error('Error saving events:', response.data.message);
         }
@@ -28,3 +39,4 @@ const saveEvent = async (props) => {
 };
 
 export default saveEvent;
+

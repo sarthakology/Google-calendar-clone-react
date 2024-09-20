@@ -83,15 +83,13 @@ const ProfilePage = () => {
     }
   };
 
-  const handleLogout = async () => {
-    setLoader(true);
+  const handleLogout = () => {
 
       localStorage.removeItem('savedEvents');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       toast.success('Successfully logged out!');
       dispatchCalEvent({ type: 'deleteAll' });
-      setLoader(false);
       navigate('/');
   };
 
