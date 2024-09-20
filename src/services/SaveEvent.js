@@ -1,6 +1,5 @@
 import axios from 'axios';
 import refreshJWTToken from './RefreshJWTToken';
-import { toast } from 'react-toastify';
 
 const saveEvent = async (props) => {
     try {
@@ -19,8 +18,7 @@ const saveEvent = async (props) => {
         });
 
         if (response.status === 200) {
-            toast.success('saved successfully:');
-            // console.log('Events saved successfully:', response.data);
+            console.log('Events saved successfully:', response.data);
         } else {
             console.error('Error saving events:', response.data.message);
         }
