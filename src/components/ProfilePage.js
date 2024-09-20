@@ -15,6 +15,7 @@ const ProfilePage = () => {
   const profile = useMemo(() => profileData || {
     email: "Error",
     gender: "Error",
+    role: "Error",
     name: "Error",
     phno: 0,
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
@@ -22,6 +23,7 @@ const ProfilePage = () => {
 
   const [name, setName] = useState(profile.name);
   const [gender, setGender] = useState(profile.gender);
+  const [role, setRole] = useState(profile.role);
   const [phno, setPhno] = useState(profile.phno);
   const [email, setEmail] = useState(profile.email);
   const [isEditing, setIsEditing] = useState(false);
@@ -35,6 +37,7 @@ const ProfilePage = () => {
   useEffect(() => {
     setName(profile.name);
     setGender(profile.gender);
+    setRole(profile.role);
     setPhno(profile.phno);
     setEmail(profile.email);
     setProfilePicture(profile.profilePicture);
@@ -58,6 +61,7 @@ const ProfilePage = () => {
         const formData = {
           name,
           gender,
+          role,
           phno,
           email,
           profilePicture: uploadedImageURL // Use the URL of the uploaded image
@@ -162,6 +166,24 @@ const ProfilePage = () => {
               </select>
             ) : (
               <p className="mt-1 text-gray-900">{gender || "N/A"}</p>
+            )}
+          </div>
+          {/* role input */}
+          <div>
+            <span className="block text-sm font-medium text-gray-700">Role:</span>
+            {isEditing ? (
+              <select
+                className="mt-1 w-full border rounded px-3 py-2"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="">Select Role</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+                <option value="badmash">Badmash</option>
+              </select>
+            ) : (
+              <p className="mt-1 text-gray-900">{role || "N/A"}</p>
             )}
           </div>
 

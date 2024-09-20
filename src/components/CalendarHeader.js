@@ -13,6 +13,7 @@ export default function CalendarHeader() {
   const profile = useProfile() || {
     email: "Error",
     gender: "Error",
+    role: "Error",
     name: "Error",
     phno: 0,
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
@@ -81,7 +82,25 @@ export default function CalendarHeader() {
       <h2 className="ml-4 text-xl text-gray-500 font-bold">
         {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
       </h2>
-
+    {/* Admin Button - only visible if the user is an admin */}
+    {profile.role === "admin" && (
+      <button 
+        onClick={() => navigate('/admin')}
+        className="
+          bg-gradient-to-r from-purple-500 to-indigo-600 
+          text-white 
+          py-2 px-6 
+          rounded-full 
+          shadow-lg 
+          hover:shadow-2xl 
+          transform hover:scale-105 transition-transform duration-200 
+          hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600
+          ml-4
+        "
+      >
+        Admin
+      </button>
+    )}
       {/* Wrap last 3 buttons in a div and push them to the right */}
       <div className="ml-auto flex relative">
         <button>

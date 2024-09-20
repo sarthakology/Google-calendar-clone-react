@@ -19,6 +19,7 @@ import RegisterPage from "../registerPage/RegisterPage";
 import LoginPage from "../loginPage/LoginPage";
 import ProfilePage from "../components/ProfilePage";
 import Loader from "../components/Loader"; // Import Loader component
+import Admin from "../admin/Admin";
 
 const AppRoutes = () => {
   const { monthIndex, showEventModal, calendarEventToggle, loader, setLoader } = useContext(GlobalContext);
@@ -98,6 +99,8 @@ const AppRoutes = () => {
           }
         />
 
+        {/* Admin */}
+        <Route path="/admin" element={<><CalendarHeader /><Admin/> </>} />
         {/* Support Pages */}
         <Route path="/help" element={<><CalendarHeader /><HelpPage /></>} />
         <Route path="/training" element={<><CalendarHeader /><TrainingPage /></>} />
