@@ -3,7 +3,6 @@ import axios from 'axios';
 import useProfile from '../profileDataBackend/ProfileData';
 import { useNavigate } from 'react-router-dom';
 import refreshJWTToken from '../services/RefreshJWTToken';
-import saveEvent from '../services/SaveEvent';
 import GlobalContext from "../context/GlobalContext";
 import { uploadFileToFirebase } from "../firebase/FirebaseUpload";
 import { toast } from 'react-toastify';
@@ -30,7 +29,7 @@ const ProfilePage = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imgURL, setImgURL] = useState(profile.profilePicture);
 
-  const { setLoader, savedEvents, dispatchCalEvent } = useContext(GlobalContext);
+  const { setLoader, dispatchCalEvent } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,12 +86,6 @@ const ProfilePage = () => {
   const handleLogout = async () => {
     setLoader(true);
 
-    try {
-      await saveEvent(savedEvents);
-    } catch (error) {
-      console.error('Error during logout:', error);
-      toast.error('An error occurred while logging out.');
-    } finally {
       localStorage.removeItem('savedEvents');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
@@ -100,7 +93,6 @@ const ProfilePage = () => {
       dispatchCalEvent({ type: 'deleteAll' });
       setLoader(false);
       navigate('/');
-    }
   };
 
   if (!profileData) return <h1>Loading profile, please wait...</h1>;

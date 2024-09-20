@@ -1,11 +1,11 @@
 import axios from 'axios';
 import refreshJWTToken from './RefreshJWTToken';
+import { toast } from 'react-toastify';
 
 const saveEvent = async (props) => {
     try {
         const accessToken = await refreshJWTToken();
         const savedEvents = props
-        console.log(savedEvents);
 
         if (!savedEvents || !Array.isArray(savedEvents)) {
             throw new Error('No valid saved events found in localStorage');
@@ -19,7 +19,8 @@ const saveEvent = async (props) => {
         });
 
         if (response.status === 200) {
-            console.log('Events saved successfully:', response.data);
+            toast.success('saved successfully:');
+            // console.log('Events saved successfully:', response.data);
         } else {
             console.error('Error saving events:', response.data.message);
         }

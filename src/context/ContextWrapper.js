@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import GlobalContext from "./GlobalContext";
 import dayjs from "dayjs";
+import saveEvent from '../services/SaveEvent';
 
 // Reducer for handling event-related actions
 function savedEventsReducer(state, { type, payload }) {
@@ -47,9 +48,17 @@ export default function ContextWrapper({ children }) {
     );
   }, [savedEvents, labels]);
 
-  // Sync saved events with localStorage
+  // Sync saved events with localStorage and backend
   useEffect(() => {
-    localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+    const handleSaveEvents = async () => {
+      try {
+        localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+        await saveEvent(savedEvents);
+      } catch (error) {
+        console.error('Error saving events:', error);
+      }
+    };
+      handleSaveEvents();
   }, [savedEvents]);
 
   // Update labels whenever saved events change
