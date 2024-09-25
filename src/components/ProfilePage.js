@@ -180,7 +180,6 @@ const ProfilePage = () => {
                 <option value="">Select Role</option>
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
-                <option value="badmash">Badmash</option>
               </select>
             ) : (
               <p className="mt-1 text-gray-900">{role || "N/A"}</p>

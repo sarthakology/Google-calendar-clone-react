@@ -3,15 +3,14 @@ import axios from 'axios';
 
 const CountriesAdmin = () => {
   const [countries, setCountries] = useState([]);
-  const [newCountry, setNewCountry] = useState(''); // State to handle new country input
+  const [newCountry, setNewCountry] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the current countries from the server
     const fetchCountries = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/countries'); // Update with your actual API endpoint
+        const response = await axios.get('http://localhost:8083/masters/countries');
         setCountries(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -22,14 +21,12 @@ const CountriesAdmin = () => {
     fetchCountries();
   }, []);
 
-  // Handle changes to existing countries
   const handleCountryChange = (index, updatedCountry) => {
     const updatedCountries = [...countries];
     updatedCountries[index].country = updatedCountry;
     setCountries(updatedCountries);
   };
 
-  // Add a new country
   const handleAddCountry = async () => {
     if (newCountry.trim()) {
       try {
@@ -37,42 +34,39 @@ const CountriesAdmin = () => {
         setCountries([...countries, response.data.country]);
         setNewCountry('');
       } catch (err) {
-        alert('Failed to create country.');
+        console.log('Failed to create country.');
       }
     } else {
-      alert('Country cannot be empty!');
+      console.log('Country cannot be empty!');
     }
   };
 
-  // Delete a country
   const handleDeleteCountry = async (id) => {
     try {
       await axios.delete(`http://localhost:8083/masters/country/delete/${id}`);
       setCountries(countries.filter((country) => country.id !== id));
     } catch (err) {
-      alert('Failed to delete country.');
+      console.log('Failed to delete country.');
     }
   };
 
-  // Update a country by its ID
   const handleUpdateCountry = async (id, updatedCountry) => {
     try {
       await axios.put(`http://localhost:8083/masters/country/update/${id}`, { id, country: updatedCountry });
-      alert('Country updated successfully!');
+      console.log('Country updated successfully!');
     } catch (err) {
-      alert('Failed to update country.');
+      console.log('Failed to update country.');
     }
   };
 
-  // Save all changes
   const handleSubmit = async () => {
     try {
       for (const country of countries) {
         await handleUpdateCountry(country.id, country.country);
       }
-      alert('Countries updated successfully!');
+      console.log('Countries updated successfully!');
     } catch (err) {
-      alert('Failed to update countries.');
+      console.log('Failed to update countries.');
     }
   };
 
@@ -82,7 +76,6 @@ const CountriesAdmin = () => {
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-2xl font-bold mb-4">Edit Countries</h1>
-
       <div className="flex flex-col space-y-4">
         {countries.map((country, index) => (
           <div key={country.id} className="flex items-center space-x-4">
@@ -102,7 +95,6 @@ const CountriesAdmin = () => {
           </div>
         ))}
       </div>
-
       <div className="mt-6">
         <input
           type="text"
@@ -118,7 +110,6 @@ const CountriesAdmin = () => {
           Add Country
         </button>
       </div>
-
       <button
         onClick={handleSubmit}
         className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

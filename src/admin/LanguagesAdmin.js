@@ -3,15 +3,14 @@ import axios from 'axios';
 
 const LanguagesAdmin = () => {
   const [languages, setLanguages] = useState([]);
-  const [newLanguage, setNewLanguage] = useState(''); // State to handle new language input
+  const [newLanguage, setNewLanguage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the current languages from the server
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/languages'); // Update with your actual API endpoint
+        const response = await axios.get('http://localhost:8083/masters/languages');
         setLanguages(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -22,14 +21,12 @@ const LanguagesAdmin = () => {
     fetchLanguages();
   }, []);
 
-  // Handle changes to existing languages
   const handleLanguageChange = (index, updatedLanguage) => {
     const updatedLanguages = [...languages];
     updatedLanguages[index].language = updatedLanguage;
     setLanguages(updatedLanguages);
   };
 
-  // Add a new language
   const handleAddLanguage = async () => {
     if (newLanguage.trim()) {
       try {
@@ -37,42 +34,39 @@ const LanguagesAdmin = () => {
         setLanguages([...languages, response.data.language]);
         setNewLanguage('');
       } catch (err) {
-        alert('Failed to create language.');
+        console.log('Failed to create language.');
       }
     } else {
-      alert('Language cannot be empty!');
+      console.log('Language cannot be empty!');
     }
   };
 
-  // Delete a language
   const handleDeleteLanguage = async (id) => {
     try {
       await axios.delete(`http://localhost:8083/masters/language/delete/${id}`);
       setLanguages(languages.filter((language) => language.id !== id));
     } catch (err) {
-      alert('Failed to delete language.');
+      console.log('Failed to delete language.');
     }
   };
 
-  // Update a language by its ID
   const handleUpdateLanguage = async (id, updatedLanguage) => {
     try {
       await axios.put(`http://localhost:8083/masters/language/update/${id}`, { id, language: updatedLanguage });
-      alert('Language updated successfully!');
+      console.log('Language updated successfully!');
     } catch (err) {
-      alert('Failed to update language.');
+      console.log('Failed to update language.');
     }
   };
 
-  // Save all changes
   const handleSubmit = async () => {
     try {
       for (const language of languages) {
         await handleUpdateLanguage(language.id, language.language);
       }
-      alert('Languages updated successfully!');
+      console.log('Languages updated successfully!');
     } catch (err) {
-      alert('Failed to update languages.');
+      console.log('Failed to update languages.');
     }
   };
 
@@ -82,7 +76,6 @@ const LanguagesAdmin = () => {
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-2xl font-bold mb-4">Edit Languages</h1>
-
       <div className="flex flex-col space-y-4">
         {languages.map((language, index) => (
           <div key={language.id} className="flex items-center space-x-4">
@@ -102,7 +95,6 @@ const LanguagesAdmin = () => {
           </div>
         ))}
       </div>
-
       <div className="mt-6">
         <input
           type="text"
@@ -118,7 +110,6 @@ const LanguagesAdmin = () => {
           Add Language
         </button>
       </div>
-
       <button
         onClick={handleSubmit}
         className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
