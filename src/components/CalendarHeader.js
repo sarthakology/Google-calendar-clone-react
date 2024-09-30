@@ -92,11 +92,6 @@ export default function CalendarHeader() {
       </button>
 
       <div className="ml-auto flex relative">
-        <button>
-          <span className="material-icons-outlined cursor-pointer mx-2 text-custom">
-            search
-          </span>
-        </button>
         <button onClick={toggleHelpDropdown}>
           <span className="material-icons-outlined cursor-pointer mx-2 text-custom">
             help
@@ -109,7 +104,7 @@ export default function CalendarHeader() {
         </button>
 
         {helpDropdown && (
-          <div className="absolute right-16 top-12 bg-custom border rounded shadow-lg p-2 w-64">
+          <div className="absolute right-16 top-12 bg-white border rounded shadow-lg p-2 w-64">
             <ul>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
                 <Link to="/help" className="block w-full h-full">Help</Link>
@@ -129,7 +124,7 @@ export default function CalendarHeader() {
         )}
 
         {settingsDropdown && (
-          <div className="absolute right-16 top-12 bg-custom border rounded shadow-lg p-2 w-64">
+          <div className="absolute right-16 top-12 bg-white border rounded shadow-lg p-2 w-64">
             <ul>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
                 <Link to="/setting" className="block w-full h-full">Settings</Link>

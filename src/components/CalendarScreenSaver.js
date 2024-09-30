@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import useProfile from "../profileDataBackend/ProfileData";
 
 const CalendarScreenSaver = () => {
+  const profile = useProfile() || {
+    name: "Error",
+    profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+  };
   const navigate = useNavigate();
   const [time, setTime] = useState(dayjs());
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -94,6 +99,18 @@ const CalendarScreenSaver = () => {
         </div>
         )}
 
+      {isFullscreen && (
+        <div className="absolute top-8 right-8 text-right flex">
+          <h1 className="text-2xl font-bold text-gray-200 mb-2">
+            Hi, {profile.name}!
+          </h1>
+          <img 
+            src={profile.profilePicture} 
+            alt="Profile" 
+            className="w-32 h-32 rounded-full border-4 border-gray-300"
+          />
+        </div>
+      )}
     </div>
   );
 };
