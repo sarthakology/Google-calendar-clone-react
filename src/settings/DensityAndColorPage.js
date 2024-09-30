@@ -1,35 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function DensityAndColorPage() {
-  const [colorSet, setColorSet] = useState('Modern (with white text)');
-  const [eventColor, setEventColor] = useState('Calendar default');
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    return localStorage.getItem('theme') === 'dark' ? true : false;
+  });
+
+  useEffect(() => {
+    const theme = isDarkTheme ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+    document.documentElement.className = theme;
+  }, [isDarkTheme]);
+
+  const toggleTheme = () => {
+    setIsDarkTheme((prevTheme) => !prevTheme);
+  };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-6">Language and Region</h1>
+    <div
+      className={`h-screen w-screen flex flex-col justify-center items-center transition-colors duration-300 ${
+        isDarkTheme ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'
+      }`}
+    >
+      <h1 className="text-5xl font-semibold mb-12">Select Theme</h1>
 
-      <div className="mb-6">
-        <label className="block text-lg font-medium mb-2">Color Set</label>
-        <select
-          value={colorSet}
-          onChange={(e) => setColorSet(e.target.value)}
-          className="w-full border border-gray-300 p-2 rounded"
-        >
-          <option>Modern (with white text)</option>
-          <option>Classic (with black text)</option>
-        </select>
-      </div>
-
-      <div className="mb-6">
-        <label className="block text-lg font-medium mb-2">Event Color and Density</label>
-        <select
-          value={eventColor}
-          onChange={(e) => setEventColor(e.target.value)}
-          className="w-full border border-gray-300 p-2 rounded"
-        >
-          <option>Responsive to your screen</option>
-          <option>Compact</option>
-        </select>
+      <div className="flex items-center text-3xl mb-6">
+        <span className="mr-4">Light</span>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={isDarkTheme}
+            onChange={toggleTheme}
+          />
+          <div className="w-20 h-10 bg-gray-200 rounded-full peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-9 after:w-9 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+        </label>
+        <span className="ml-4">Dark</span>
       </div>
     </div>
   );

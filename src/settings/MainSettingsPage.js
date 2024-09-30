@@ -3,6 +3,7 @@ import useLanguages from '../mastersApi/Languages';
 import useCountries from '../mastersApi/Countries';
 import useDateFormats from '../mastersApi/DateFormats';
 import useTimezones from '../mastersApi/TimeZones';
+import { toast } from 'react-toastify';
 
 const SettingsPage = () => {
   const languageOptions = useLanguages();
@@ -10,7 +11,7 @@ const SettingsPage = () => {
   const dateFormatOptions = useDateFormats();
   const timezoneOptions = useTimezones();
 
-  const [language, setLanguage] = useState("English (US)");
+  const [language, setLanguage] = useState("English");
   const [country, setCountry] = useState("India");
   const [dateFormat, setDateFormat] = useState("DD/MM/YYYY");
   const [timeFormat, setTimeFormat] = useState("1:00pm");
@@ -20,16 +21,16 @@ const SettingsPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({
-      language,
-      country,
-      dateFormat,
-      timeFormat,
-      primaryTimeZone,
-      secondaryTimeZone,
-      startWeekOn
-    });
-  };
+    // localStorage.setItem('language', language);
+    localStorage.setItem('country', country);
+    localStorage.setItem('dateFormat', dateFormat);
+    localStorage.setItem('timeFormat', timeFormat);
+    // localStorage.setItem('primaryTimeZone', primaryTimeZone);
+    // localStorage.setItem('secondaryTimeZone', secondaryTimeZone);
+    // localStorage.setItem('startWeekOn', startWeekOn);
+    toast.success("Settings have been saved successfully!");
+  }; 
+  
 
   return (
     <div className="p-8 max-w-4xl mx-auto">

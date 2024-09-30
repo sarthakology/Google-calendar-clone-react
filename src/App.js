@@ -3,13 +3,12 @@ import AppRoutes from "./routes/AppRoutes";
 import { ToastContainer} from 'react-toastify';
 
 function App() {
-
-
-  return (
+  return (<div>
     <React.Fragment>
       <AppRoutes />
       <ToastContainer />
     </React.Fragment>
+  </div>
   );
 }
 
