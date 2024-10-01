@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import GlobalContext from "../context/GlobalContext";
+import {useTranslation} from "react-i18next";
 
 export default function EventsPage() {
+  const {t} = useTranslation();
   const { savedEvents } = useContext(GlobalContext);
 
   // Helper function to dynamically set the color of the label
@@ -19,23 +21,23 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-5">
-      <h1 className="text-4xl font-bold text-gray-800 mb-10">Events</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-10">{t("events")}</h1>
       {savedEvents.length > 0 ? (
         <div className="w-full max-w-4xl">
           <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-gray-600 font-semibold">
-                  Title
+                  {t("title")}
                 </th>
                 <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-gray-600 font-semibold">
-                  Description
+                  {t("description")}
                 </th>
                 <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-gray-600 font-semibold">
-                  Label
+                  {t("label")}
                 </th>
                 <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-gray-600 font-semibold">
-                  Day
+                  {t("day")}
                 </th>
               </tr>
             </thead>
@@ -62,7 +64,7 @@ export default function EventsPage() {
           </table>
         </div>
       ) : (
-        <p className="text-xl text-gray-700">No events available</p>
+        <p className="text-xl text-gray-700">{t("noeventsavailable")}</p>
       )}
     </div>
   );

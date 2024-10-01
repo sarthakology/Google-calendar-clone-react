@@ -5,8 +5,10 @@ import GlobalContext from "../context/GlobalContext";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useTranslation} from "react-i18next";
 
 export default function LoginPage() {
+  const {t} = useTranslation();  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [eventsFetched, setEventsFetched] = useState(false);
@@ -76,11 +78,14 @@ export default function LoginPage() {
         <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-              Login to your account
+            {t("greeting")}
+            </h1>
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+            {t("login")}
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={submitData}>
               <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Your email</label>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">{t("yEmail")}</label>
                 <input
                   type="email"
                   name="email"
@@ -93,7 +98,7 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">{t("Password")}</label>
                 <input
                   type="password"
                   name="password"
@@ -109,10 +114,10 @@ export default function LoginPage() {
                 type="submit"
                 className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
-                Login
+                {t("Login")}
               </button>
               <p className="text-sm font-light text-gray-500">
-                Don't have an account? <Link to="/register" className="font-medium text-primary-600 hover:underline">Sign up here</Link>
+              {t("nAccount")}<Link to="/register" className="font-medium text-primary-600 hover:underline">{t("signuphere")}</Link>
               </p>
             </form>
           </div>

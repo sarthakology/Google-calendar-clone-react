@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ContextWrapper from "./context/ContextWrapper";
+import "./i18n"
 
 // Create a root.
 const root = ReactDOM.createRoot(document.getElementById("root"));

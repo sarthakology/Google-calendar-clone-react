@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
+import {useTranslation} from "react-i18next";
 
 const labelsClasses = [
   "indigo",
@@ -11,6 +12,7 @@ const labelsClasses = [
 ];
 
 export default function EventModal() {
+  const {t} = useTranslation();  
   const {
     setShowEventModal,
     daySelected,
@@ -82,7 +84,7 @@ export default function EventModal() {
             <input
               type="text"
               name="title"
-              placeholder="Add title"
+              placeholder={t("addtitle")}
               value={title}
               required
               className="pt-3 border-0 text-gray-600 text-xl font-semibold pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
@@ -98,7 +100,7 @@ export default function EventModal() {
             <input
               type="text"
               name="description"
-              placeholder="Add a description"
+              placeholder={t("addadescription")}
               value={description}
               required
               className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
@@ -130,7 +132,7 @@ export default function EventModal() {
             onClick={handleSubmit}
             className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white"
           >
-            Save
+            {t("save")}
           </button>
         </footer>
       </form>

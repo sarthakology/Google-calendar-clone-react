@@ -7,11 +7,12 @@ import GlobalContext from "../context/GlobalContext";
 import { uploadFileToFirebase } from "../firebase/FirebaseUpload";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useTranslation} from "react-i18next";
 
 const ProfilePage = () => {
+  const {t} = useTranslation();
   const profileData = useProfile();
   
-  // Memoize profile data
   const profile = useMemo(() => profileData || {
     email: "Error",
     gender: "Error",
@@ -97,7 +98,7 @@ const ProfilePage = () => {
       navigate('/');
   };
 
-  if (!profileData) return <h1>Loading profile, please wait...</h1>;
+  if (!profileData) return <h1>{t("loadingprofilepleasewait")}</h1>;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -137,7 +138,7 @@ const ProfilePage = () => {
         <div className="space-y-4">
           {/* Name input */}
           <div>
-            <span className="block text-sm font-medium text-gray-700">Name:</span>
+            <span className="block text-sm font-medium text-gray-700">{t("name")}:</span>
             {isEditing ? (
               <input
                 type="text"
@@ -152,7 +153,7 @@ const ProfilePage = () => {
 
           {/* Gender input */}
           <div>
-            <span className="block text-sm font-medium text-gray-700">Gender:</span>
+            <span className="block text-sm font-medium text-gray-700">{t("gender")}:</span>
             {isEditing ? (
               <select
                 className="mt-1 w-full border rounded px-3 py-2"
@@ -170,7 +171,7 @@ const ProfilePage = () => {
           </div>
           {/* role input */}
           <div>
-            <span className="block text-sm font-medium text-gray-700">Role:</span>
+            <span className="block text-sm font-medium text-gray-700">{t("role")}:</span>
             {isEditing ? (
               <select
                 className="mt-1 w-full border rounded px-3 py-2"
@@ -188,7 +189,7 @@ const ProfilePage = () => {
 
           {/* Phone number input */}
           <div>
-            <span className="block text-sm font-medium text-gray-700">Phone Number:</span>
+            <span className="block text-sm font-medium text-gray-700">{t("phoneNumber")}:</span>
             {isEditing ? (
               <input
                 type="text"
@@ -203,7 +204,7 @@ const ProfilePage = () => {
 
           {/* Email input */}
           <div>
-            <span className="block text-sm font-medium text-gray-700">Email:</span>
+            <span className="block text-sm font-medium text-gray-700">{t("email")}:</span>
             {isEditing ? (
               <input
                 type="text"
@@ -220,14 +221,14 @@ const ProfilePage = () => {
             className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
             onClick={() => isEditing ? handleSaveChanges() : setIsEditing(true)}
           >
-            {isEditing ? 'Save Changes' : 'Edit Profile'}
+            {isEditing ? t("saveChanges") : t("editProfile")}
           </button>
 
           <button 
             className="mt-4 w-full bg-red-500 text-white py-2 rounded"
             onClick={handleLogout}
           >
-            Logout
+            {t("logout")}
           </button>
         </div>
       </div>

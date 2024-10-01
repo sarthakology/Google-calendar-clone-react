@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {useTranslation} from "react-i18next";
 
 const TimezonesAdmin = () => {
+  const {t} = useTranslation();  
   const [timezones, setTimezones] = useState([]);
   const [newTimezone, setNewTimezone] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -70,12 +72,12 @@ const TimezonesAdmin = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>{t("loading")}</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-4">Edit Timezones</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("editTimezones")}</h1>
       <div className="flex flex-col space-y-4">
         {timezones.map((timezone, index) => (
           <div key={timezone.id} className="flex items-center space-x-4">
@@ -90,7 +92,7 @@ const TimezonesAdmin = () => {
               onClick={() => handleDeleteTimezone(timezone.id)}
               className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
             >
-              Delete
+              {t("delete")}
             </button>
           </div>
         ))}
@@ -100,21 +102,21 @@ const TimezonesAdmin = () => {
           type="text"
           value={newTimezone}
           onChange={(e) => setNewTimezone(e.target.value)}
-          placeholder="New timezone"
+          placeholder={t("newtimezone")}
           className="border rounded p-2 w-full mb-4"
         />
         <button
           onClick={handleAddTimezone}
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
         >
-          Add Timezone
+          {t("addTimezone")}
         </button>
       </div>
       <button
         onClick={handleSubmit}
         className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
       >
-        Save Changes
+        {t("saveChanges")}
       </button>
     </div>
   );

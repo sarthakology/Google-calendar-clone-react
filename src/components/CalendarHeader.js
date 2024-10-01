@@ -3,8 +3,10 @@ import React, { useContext, useState, useEffect } from "react";
 import GlobalContext from "../context/GlobalContext";
 import { Link, useNavigate } from "react-router-dom";
 import useProfile from "../profileDataBackend/ProfileData";
+import {useTranslation} from "react-i18next";
 
 export default function CalendarHeader() {
+  const {t} = useTranslation();  
   const { monthIndex, setMonthIndex, showSidebar, setShowSidebar, calendarEventToggle, setCalendarEventToggle } = useContext(GlobalContext);
   const [helpDropdown, setHelpDropdown] = useState(false);
   const [settingsDropdown, setSettingsDropdown] = useState(false);
@@ -43,12 +45,12 @@ export default function CalendarHeader() {
 
   function toggleHelpDropdown() {
     setHelpDropdown(!helpDropdown);
-    setSettingsDropdown(false); // Close settings dropdown if open
+    setSettingsDropdown(false);
   }
 
   function toggleSettingsDropdown() {
     setSettingsDropdown(!settingsDropdown);
-    setHelpDropdown(false); // Close help dropdown if open
+    setHelpDropdown(false);
   }
 
   return (
@@ -62,7 +64,7 @@ export default function CalendarHeader() {
         <img src='https://upload.wikimedia.org/wikipedia/en/d/db/C-DAC_LogoTransp.png' alt="calendar" className="mr-2 h-12" />
       </Link>
       <button onClick={handleReset} className="border rounded py-2 px-4 mr-5">
-        Today
+      {t("today")}
       </button>
       <button onClick={handlePrevMonth}>
         <span className="material-icons-outlined cursor-pointer mx-2">
@@ -80,15 +82,15 @@ export default function CalendarHeader() {
 
       {profile.role === "admin" && (
         <button 
-          onClick={() => navigate('/admin')}
-          className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-2 px-6 rounded-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-200 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 ml-4">
-          Admin
+        onClick={() => navigate('/admin')}
+        className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-2 px-6 rounded-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-200 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 ml-4">
+        {t("admin")}
         </button>
       )}
       <button 
         onClick={() => navigate('/screensaver')}
         className="border rounded py-2 px-6 ml-4 bg-custom text-custom">
-        Screen Saver
+        {t("screenSaver")}
       </button>
 
       <div className="ml-auto flex relative">
@@ -107,17 +109,17 @@ export default function CalendarHeader() {
           <div className="absolute right-16 top-12 bg-white border rounded shadow-lg p-2 w-64">
             <ul>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/help" className="block w-full h-full">Help</Link>
+                <Link to="/help" className="block w-full h-full">{t("help")}</Link>
               </li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/training" className="block w-full h-full">Training</Link>
+                <Link to="/training" className="block w-full h-full">{t("training")}</Link>
               </li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/updates" className="block w-full h-full">Updates</Link>
+                <Link to="/updates" className="block w-full h-full">{t("updates")}</Link>
               </li>
               <li><hr className="border-t border-gray-300 my-2" /></li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/feedback" className="block w-full h-full">Send feedback to Google</Link>
+                <Link to="/feedback" className="block w-full h-full">{t("sendfeedbacktoCDAC")}</Link>
               </li>
             </ul>
           </div>
@@ -127,18 +129,18 @@ export default function CalendarHeader() {
           <div className="absolute right-16 top-12 bg-white border rounded shadow-lg p-2 w-64">
             <ul>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/setting" className="block w-full h-full">Settings</Link>
+                <Link to="/setting" className="block w-full h-full">{t("settings")}</Link>
               </li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/trash" className="block w-full h-full">Trash</Link>
-              </li>
-              <li><hr className="border-t border-gray-300 my-2" /></li>
-              <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/DensityAndColor" className="block w-full h-full">Density and color</Link>
+                <Link to="/trash" className="block w-full h-full">{t("trash")}</Link>
               </li>
               <li><hr className="border-t border-gray-300 my-2" /></li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/Get-add-ons" className="block w-full h-full">Get add-ons</Link>
+                <Link to="/DensityAndColor" className="block w-full h-full">{t("densityandcolor")}</Link>
+              </li>
+              <li><hr className="border-t border-gray-300 my-2" /></li>
+              <li className="p-2 hover:bg-gray-100 cursor-pointer">
+                <Link to="/Get-add-ons" className="block w-full h-full">{t("getaddons")}</Link>
               </li>
             </ul>
           </div>

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import {useTranslation} from "react-i18next";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function RegisterPage() {
+  const {t} = useTranslation();  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -42,11 +43,11 @@ export default function RegisterPage() {
         <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-              Create an account
+            {t("createanaccount")}
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Your email</label>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">{t("youremail")}</label>
                 <input
                   type="email"
                   name="email"
@@ -59,7 +60,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">{t("password")}</label>
                 <input
                   type="password"
                   name="password"
@@ -72,7 +73,7 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-                <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-gray-900">Confirm password</label>
+                <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-gray-900">{t("confirmpassword")}</label>
                 <input
                   type="password"
                   name="confirm-password"
@@ -97,7 +98,7 @@ export default function RegisterPage() {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="terms" className="font-light text-gray-500">
-                    I accept the <Link to="/terms" className="font-medium text-primary-600 hover:underline">Terms and Conditions</Link>
+                  {t("iacceptthe")}<Link to="/terms" className="font-medium text-primary-600 hover:underline">{t("termsandConditions")}</Link>
                   </label>
                 </div>
               </div>
@@ -107,10 +108,10 @@ export default function RegisterPage() {
                 disabled={!isChecked}
                 style={{ opacity: isChecked ? 1 : 0.5 }}
               >
-                Create an account
+                {t("createanaccount")}
               </button>
               <p className="text-sm font-light text-gray-500">
-                Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline">Login here</Link>
+              {t("alreadyhaveanaccount")}<Link to="/login" className="font-medium text-primary-600 hover:underline">{t("loginhere")}</Link>
               </p>
             </form>
           </div>

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import useProfile from "../profileDataBackend/ProfileData";
+import {useTranslation} from "react-i18next";
 
 const CalendarScreenSaver = () => {
+  const {t} = useTranslation();  
   const profile = useProfile() || {
     name: "Error",
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
@@ -88,13 +90,13 @@ const CalendarScreenSaver = () => {
             onClick={toggleFullScreen}
                 className="px-6 py-3 bg-white text-black font-semibold rounded-md hover:bg-gray-300 transition duration-300"
             >
-            Go Full Screen
+            {t("goFullScreen")}
             </button>
             <button
             onClick={returnHome}
                 className="px-6 py-3 bg-white text-black font-semibold rounded-md hover:bg-gray-300 transition duration-300"
             >
-            Home
+            {t("home")}
             </button>
         </div>
         )}
@@ -102,7 +104,7 @@ const CalendarScreenSaver = () => {
       {isFullscreen && (
         <div className="absolute top-8 right-8 text-right flex">
           <h1 className="text-2xl font-bold text-gray-200 mb-2">
-            Hi, {profile.name}!
+          {t("hi")}, {profile.name}!
           </h1>
           <img 
             src={profile.profilePicture} 
