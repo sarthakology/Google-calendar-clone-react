@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
 import {useTranslation} from "react-i18next";
-
+import DeleteEvent from "../services/DeleteEvent";
 const labelsClasses = [
   "indigo",
   "gray",
@@ -49,6 +49,12 @@ export default function EventModal() {
 
     setShowEventModal(false);
   }
+
+  function handelDelete(){
+      dispatchCalEvent({ type: "delete", payload: selectedEvent });
+      DeleteEvent(selectedEvent.id)
+      setShowEventModal(false);
+  }
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
       <form className="bg-white rounded-lg shadow-2xl w-1/4">
@@ -59,13 +65,7 @@ export default function EventModal() {
           <div>
             {selectedEvent && (
               <span
-                onClick={() => {
-                  dispatchCalEvent({
-                    type: "delete",
-                    payload: selectedEvent,
-                  });
-                  setShowEventModal(false);
-                }}
+                onClick={handelDelete}
                 className="material-icons-outlined text-gray-400 cursor-pointer"
               >
                 delete

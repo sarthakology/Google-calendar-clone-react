@@ -16,9 +16,6 @@ i18n
         resources,
         lng: 'english',
         fallbackLng: 'english',
-        interpolation: {
-            escapeValue: false,
-        },
     });
 
 export default i18n;

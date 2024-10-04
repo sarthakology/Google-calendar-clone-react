@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useLanguages from '../mastersApi/Languages';
 import useCountries from '../mastersApi/Countries';
 import useDateFormats from '../mastersApi/DateFormats';
@@ -22,11 +22,13 @@ const SettingsPage = () => {
   const [timeFormat, setTimeFormat] = useState("1:00pm");
   const [startWeekOn, setStartWeekOn] = useState("Sunday");
 
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language, i18n]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem('language', language);
-
-    console.log(language)
     i18n.changeLanguage(language);
 
 

@@ -12,7 +12,7 @@ function savedEventsReducer(state, { type, payload }) {
       return state.map((evt) => (evt.id === payload.id ? payload : evt));
     case "delete":
       return state.filter((evt) => evt.id !== payload.id);
-    case "deleteAll":  // Add a new action for deleting all events
+    case "deleteAll":
       return [];
     default:
       throw new Error("Invalid action type");
