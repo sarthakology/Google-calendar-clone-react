@@ -16,6 +16,7 @@ export default function LoginPage() {
   const { dispatchCalEvent } = useContext(GlobalContext);
 
   const submitData = async (e) => {
+    localStorage.removeItem('savedEvents');
     e.preventDefault();
 
     try {
@@ -51,14 +52,14 @@ export default function LoginPage() {
       const accessToken = await refreshJWTToken();
 
       if (accessToken) {
-        const response = await axios.get('http://localhost:8083/auth/get/user', {
+        const response = await axios.get('http://localhost:8083/auth/event', {
           headers: { 
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}` 
           },
         });
         
-        const savedEvents = response.data.savedEvents || [];
+        const savedEvents = response.data || [];
         savedEvents.forEach(event => {
           dispatchCalEvent({ type: "push", payload: event });
         });

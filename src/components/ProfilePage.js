@@ -89,7 +89,6 @@ const ProfilePage = () => {
   };
 
   const handleLogout = () => {
-
       localStorage.removeItem('savedEvents');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
