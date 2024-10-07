@@ -16,8 +16,9 @@ export default function LoginPage() {
   const { dispatchCalEvent } = useContext(GlobalContext);
 
   const submitData = async (e) => {
-    localStorage.removeItem('savedEvents');
     e.preventDefault();
+    localStorage.removeItem('savedEvents');
+    dispatchCalEvent({ type: 'deleteAll' });
 
     try {
       const response = await axios.post(
