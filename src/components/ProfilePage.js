@@ -32,7 +32,7 @@ const ProfilePage = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imgURL, setImgURL] = useState(profile.profilePicture);
 
-  const { setLoader, dispatchCalEvent } = useContext(GlobalContext);
+  const { setLoader, dispatchCalEvent,dispatchTask } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,10 +90,12 @@ const ProfilePage = () => {
 
   const handleLogout = () => {
       localStorage.removeItem('savedEvents');
+      localStorage.removeItem('savedTasks');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       toast.success('Successfully logged out!');
       dispatchCalEvent({ type: 'deleteAll' });
+      dispatchTask({ type: 'deleteAll' });
       navigate('/');
   };
 

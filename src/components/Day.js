@@ -10,7 +10,7 @@ export default function Day({ day, rowIdx }) {
     filteredEvents,
     setSelectedEvent,
   } = useContext(GlobalContext);
-
+       
   useEffect(() => {
     const events = filteredEvents.filter(
       (evt) =>

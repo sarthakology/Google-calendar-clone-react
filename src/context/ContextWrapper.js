@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import GlobalContext from "./GlobalContext";
 import dayjs from "dayjs";
 import saveEvent from '../services/SaveEvent';
+import saveTask from '../services/SaveTask'; // Import a saveTask service if needed
 
 // Reducer for handling event-related actions
 function savedEventsReducer(state, { type, payload }) {
@@ -19,10 +20,30 @@ function savedEventsReducer(state, { type, payload }) {
   }
 }
 
-// Initialize events from localStorage
+// Reducer for handling task-related actions
+function taskReducer(state, { type, payload }) {
+  switch (type) {
+    case "add":
+      return [...state, payload];
+    case "update":
+      return state.map((task) => (task.id === payload.id ? payload : task));
+    case "delete":
+      return state.filter((task) => task.id !== payload.id);
+    case "deleteAll":
+      return [];
+    default:
+      throw new Error("Invalid action type");
+  }
+}
+
 function initEvents() {
   const storageEvents = localStorage.getItem("savedEvents");
   return storageEvents ? JSON.parse(storageEvents) : [];
+}
+
+function initTasks() {
+  const storageTasks = localStorage.getItem("savedTasks");
+  return storageTasks ? JSON.parse(storageTasks) : [];
 }
 
 export default function ContextWrapper({ children }) {
@@ -33,12 +54,11 @@ export default function ContextWrapper({ children }) {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [labels, setLabels] = useState([]);
   const [savedEvents, dispatchCalEvent] = useReducer(savedEventsReducer, [], initEvents);
+  const [savedTasks, dispatchTask] = useReducer(taskReducer, [], initTasks);
   const [showSidebar, setShowSidebar] = useState(true);
-  const [calendarEventToggle, setCalendarEventToggle] = useState(true); // true: calendar view, false: event view
+  const [calendarEventToggle, setCalendarEventToggle] = useState(true);
+  const [loader, setLoader] = useState(false);
 
-  const [loader, setLoader] = useState(false); // State for loader
-
-  // Filter events based on selected labels
   const filteredEvents = useMemo(() => {
     return savedEvents.filter((evt) =>
       labels
@@ -53,15 +73,27 @@ export default function ContextWrapper({ children }) {
     const handleSaveEvents = async () => {
       try {
         localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
-        await saveEvent(savedEvents);
+        await saveEvent(savedEvents); // Optional: Save to backend
       } catch (error) {
         console.error('Error saving events:', error);
       }
     };
-      handleSaveEvents();
+    handleSaveEvents();
   }, [savedEvents]);
 
-  // Update labels whenever saved events change
+  // Sync saved tasks with localStorage and backend
+  useEffect(() => {
+    const handleSaveTasks = async () => {
+      try {
+        localStorage.setItem("savedTasks", JSON.stringify(savedTasks));
+        await saveTask(savedTasks); // Optional: Save to backend
+      } catch (error) {
+        console.error('Error saving tasks:', error);
+      }
+    };
+    handleSaveTasks();
+  }, [savedTasks]);
+
   useEffect(() => {
     setLabels((prevLabels) => {
       return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
@@ -74,21 +106,18 @@ export default function ContextWrapper({ children }) {
     });
   }, [savedEvents]);
 
-  // Set month index if small calendar month is selected
   useEffect(() => {
     if (smallCalendarMonth !== null) {
       setMonthIndex(smallCalendarMonth);
     }
   }, [smallCalendarMonth]);
 
-  // Reset selected event when event modal closes
   useEffect(() => {
     if (!showEventModal) {
       setSelectedEvent(null);
     }
   }, [showEventModal]);
 
-  // Update label checkboxes
   function updateLabel(label) {
     setLabels(
       labels.map((lbl) => (lbl.label === label.label ? label : lbl))
@@ -118,8 +147,10 @@ export default function ContextWrapper({ children }) {
         setShowSidebar,
         calendarEventToggle,
         setCalendarEventToggle,
-        loader,  // Provide loader state to context
-        setLoader,  // Provide function to set loader state
+        loader,
+        setLoader,
+        savedTasks,
+        dispatchTask,
       }}
     >
       {children}

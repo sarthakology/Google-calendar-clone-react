@@ -5,20 +5,23 @@ import GlobalContext from "../context/GlobalContext";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
-  const {t} = useTranslation();  
+  const { t } = useTranslation();  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [eventsFetched, setEventsFetched] = useState(false);
+  const [tasksFetched, setTasksFetched] = useState(false); // New state for tasks
   const navigate = useNavigate();
-  const { dispatchCalEvent } = useContext(GlobalContext);
+  const { dispatchCalEvent, dispatchTask } = useContext(GlobalContext);
 
   const submitData = async (e) => {
     e.preventDefault();
     localStorage.removeItem('savedEvents');
+    localStorage.removeItem('savedTasks');
     dispatchCalEvent({ type: 'deleteAll' });
+    dispatchTask({ type: 'deleteAll' });
 
     try {
       const response = await axios.post(
@@ -36,6 +39,11 @@ export default function LoginPage() {
         if (!eventsFetched) {
           await fetchAndDispatchEvents();
           setEventsFetched(true);
+        }
+
+        if (!tasksFetched) {
+          await fetchAndDispatchTasks(); // Fetch tasks after login
+          setTasksFetched(true);
         }
 
         navigate('/');
@@ -70,20 +78,42 @@ export default function LoginPage() {
     }
   };
 
+  // New function to fetch tasks
+  const fetchAndDispatchTasks = async () => {
+    try {
+      const accessToken = await refreshJWTToken();
+
+      if (accessToken) {
+        const response = await axios.get('http://localhost:8083/auth/task', {
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}` 
+          },
+        });
+        
+        const savedTasks = response.data || [];
+        savedTasks.forEach(task => {
+          dispatchTask({ type: "add", payload: task });
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching user tasks:', error);
+    }
+  };
+
   return (
     <section className="bg-gray-50">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <Link to="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900">
           <img className="mr-2" src="https://www.cdac.in/img/cdac-logo.png" alt="logo" />
- 
         </Link>
         <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            {t("greeting")}
+              {t("greeting")}
             </h1>
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            {t("login")}
+              {t("login")}
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={submitData}>
               <div>
@@ -119,7 +149,7 @@ export default function LoginPage() {
                 {t("Login")}
               </button>
               <p className="text-sm font-light text-gray-500">
-              {t("nAccount")}<Link to="/register" className="font-medium text-primary-600 hover:underline">{t("signuphere")}</Link>
+                {t("nAccount")}<Link to="/register" className="font-medium text-primary-600 hover:underline">{t("signuphere")}</Link>
               </p>
             </form>
           </div>

@@ -1,6 +1,5 @@
 import React from "react";
 
-// Default values for the global context, including loader state
 const GlobalContext = React.createContext({
   monthIndex: 0,
   setMonthIndex: () => {},
@@ -22,8 +21,10 @@ const GlobalContext = React.createContext({
   setShowSidebar: () => {},
   calendarEventToggle: true,
   setCalendarEventToggle: () => {},
-  loader: false, // Adding loader state
-  setLoader: () => {}, // Adding function to set loader
+  loader: false,
+  setLoader: () => {},
+  savedTasks: [],
+  dispatchTask: () => {},
 });
 
 export default GlobalContext;

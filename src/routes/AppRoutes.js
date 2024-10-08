@@ -21,6 +21,7 @@ import ProfilePage from "../components/ProfilePage";
 import Loader from "../components/Loader";
 import Admin from "../admin/Admin";
 import CalendarScreenSaver from "../components/CalendarScreenSaver";
+import TasksManager from "../components/TaskManager";
 
 const AppRoutes = () => {
   const { monthIndex, showEventModal, calendarEventToggle, loader, setLoader } = useContext(GlobalContext);
@@ -113,7 +114,10 @@ const AppRoutes = () => {
         <Route path="/trash" element={<><CalendarHeader /><TrashPage /></>} />
         <Route path="/DensityAndColor" element={<><CalendarHeader /><DensityAndColorPage /></>} />
         <Route path="/Get-add-ons" element={<><CalendarHeader /><GetAddonsPage /></>} />
+
         <Route path="/screensaver" element={<CalendarScreenSaver/>} />
+
+        <Route path="/task" element={<><CalendarHeader /><TasksManager/></>} />
 
         {/* 404 Page */}
         <Route
