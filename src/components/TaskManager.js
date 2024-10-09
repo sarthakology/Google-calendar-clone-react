@@ -42,7 +42,7 @@ const TasksManager = () => {
       resetForm();
     }
   };
-
+  
   const handleUpdateTask = () => {
     if (editingTask && taskInput.trim() && taskDate && taskDescription) {
       dispatchTask({

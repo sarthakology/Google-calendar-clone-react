@@ -22,6 +22,7 @@ import Loader from "../components/Loader";
 import Admin from "../admin/Admin";
 import CalendarScreenSaver from "../components/CalendarScreenSaver";
 import TasksManager from "../components/TaskManager";
+import SearchResultPage from "../components/SearchResultPage";
 
 const AppRoutes = () => {
   const { monthIndex, showEventModal, calendarEventToggle, loader, setLoader } = useContext(GlobalContext);
@@ -118,6 +119,8 @@ const AppRoutes = () => {
         <Route path="/screensaver" element={<CalendarScreenSaver/>} />
 
         <Route path="/task" element={<><CalendarHeader /><TasksManager/></>} />
+
+        <Route path="/search/:username" element={<SearchResultPage />} />
 
         {/* 404 Page */}
         <Route

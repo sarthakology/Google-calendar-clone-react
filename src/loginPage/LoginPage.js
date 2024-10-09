@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [eventsFetched, setEventsFetched] = useState(false);
-  const [tasksFetched, setTasksFetched] = useState(false); // New state for tasks
+  const [tasksFetched, setTasksFetched] = useState(false);
   const navigate = useNavigate();
   const { dispatchCalEvent, dispatchTask } = useContext(GlobalContext);
 

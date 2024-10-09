@@ -3,6 +3,7 @@ import CreateEventButton from "./CreateEventButton";
 import SmallCalendar from "./SmallCalendar";
 import Labels from "./Labels";
 import GlobalContext from "../context/GlobalContext";
+import SearchBox from "./SearchBox";
 
 export default function Sidebar() {
   const { showSidebar } = useContext(GlobalContext);
@@ -15,6 +16,7 @@ export default function Sidebar() {
       {showSidebar ? (
         <>
           <SmallCalendar />
+          <SearchBox/>
           <Labels />
         </>
       ) : null}
