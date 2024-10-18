@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function SearchBox() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -10,7 +11,7 @@ export default function SearchBox() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(searchTerm)) {
-            console.log('Invalid email format');
+            toast.error('Invalid email format');
             return;
         }
 
@@ -20,7 +21,8 @@ export default function SearchBox() {
                 navigate(`/search/${searchTerm}`);
             }
         } catch (error) {
-            console.log('Not found or error occurred:', error.response ? error.response.data : error.message);
+            toast.error('Not found or error occurred');
+            // console.log('Not found or error occurred:', error.response ? error.response.data : error.message);
         }
     };
 

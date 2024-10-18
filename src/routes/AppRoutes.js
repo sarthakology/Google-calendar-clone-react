@@ -120,7 +120,7 @@ const AppRoutes = () => {
 
         <Route path="/task" element={<><CalendarHeader /><TasksManager/></>} />
 
-        <Route path="/search/:username" element={<SearchResultPage />} />
+        <Route path="/search/:username" element={<><CalendarHeader /><SearchResultPage /></>} />
 
         {/* 404 Page */}
         <Route

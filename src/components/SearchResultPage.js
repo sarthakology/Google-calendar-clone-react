@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import GlobalContext from "../context/GlobalContext";
+import { toast } from 'react-toastify';
 
 export default function SearchResultPage() {
   const { username } = useParams();
@@ -17,6 +18,7 @@ export default function SearchResultPage() {
 
     if (!emailRegex.test(searchTerm)) {
       setError('Invalid email format');
+      toast.error('Invalid email format');
       return;
     }
 
@@ -25,6 +27,7 @@ export default function SearchResultPage() {
         const response = await axios.get(`http://localhost:8083/search/${searchTerm}`);
         setData(response.data);
       } catch (error) {
+        toast.error('Not found or error occurred');
         setError(error.response ? error.response.data : 'Not found or error occurred');
       }
     };
@@ -52,14 +55,14 @@ export default function SearchResultPage() {
     checkedEvents.forEach(event => {
         dispatchCalEvent({ type: "push", payload: event });
       });
-    // console.log('Checked Events:', checkedEvents);
-  };
-
-  const handleLogCheckedTasks = () => {
-    checkedTasks.forEach(task => {
+      toast.success('Events added to your Account Successfully!');
+    };
+    
+    const handleLogCheckedTasks = () => {
+      checkedTasks.forEach(task => {
         dispatchTask({ type: "add", payload: task });
       });
-    // console.log('Checked Tasks:', checkedTasks);
+      toast.success('Tasks added to your Account Successfully!');
   };
 
   if (error) {

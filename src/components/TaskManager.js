@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
 import dayjs from "dayjs";
+import { toast } from 'react-toastify';
 
 const TasksManager = () => {
   const { savedTasks, dispatchTask } = useContext(GlobalContext);
@@ -41,6 +42,7 @@ const TasksManager = () => {
       });
       resetForm();
     }
+    toast.success('Task Added Successfully!');
   };
   
   const handleUpdateTask = () => {
@@ -60,6 +62,7 @@ const TasksManager = () => {
       });
       resetForm();
     }
+    toast.success('Task Updated Successfully!');
   };
 
   const resetForm = () => {
@@ -88,6 +91,7 @@ const TasksManager = () => {
 
   const handleDeleteTask = (id) => {
     dispatchTask({ type: "delete", payload: { id } });
+    toast.success('Task Deleted Successfully!');
   };
 
 
