@@ -56,13 +56,13 @@ export default function SearchResultPage() {
         dispatchCalEvent({ type: "push", payload: event });
       });
       toast.success('Events added to your Account Successfully!');
-    };
+  };
     
-    const handleLogCheckedTasks = () => {
-      checkedTasks.forEach(task => {
-        dispatchTask({ type: "add", payload: task });
-      });
-      toast.success('Tasks added to your Account Successfully!');
+  const handleLogCheckedTasks = () => {
+    checkedTasks.forEach(task => {
+      dispatchTask({ type: "add", payload: task });
+    });
+    toast.success('Tasks added to your Account Successfully!');
   };
 
   if (error) {
@@ -89,62 +89,67 @@ export default function SearchResultPage() {
         <p className="text-xl"><strong>Role:</strong> {data.role}</p>
       </div>
 
-      <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4 flex justify-between items-center">
-          Saved Events
-          <button
-            onClick={handleLogCheckedEvents}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-          >
-            Add events to your account
-          </button>
-        </h2>
-        <ul className="list-disc pl-6 space-y-4">
-          {data.savedEvents.map((event, index) => (
-            <li key={index} className="text-lg flex items-center">
-              <input
-                type="checkbox"
-                onChange={(e) => handleEventChange(e, index)}
-                className="mr-2"
-              />
-              <div>
-                <p><strong>Title:</strong> {event.title}</p>
-                <p><strong>Label:</strong> {event.label}</p>
-                <p><strong>Day:</strong> {new Date(event.day).toDateString()}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
 
-      <div>
-        <h2 className="text-2xl font-semibold mb-4 flex justify-between items-center">
-          Saved Tasks
+      {data.savedEvents && data.savedEvents.length > 0 && (
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4 flex justify-between items-center">
+            Saved Events
+          </h2>
+          <ul className="list-disc pl-6 space-y-4">
+            {data.savedEvents.map((event, index) => (
+              <li key={index} className="text-lg flex items-center">
+                <input
+                  type="checkbox"
+                  onChange={(e) => handleEventChange(e, index)}
+                  className="mr-2"
+                />
+                <div>
+                  <p><strong>Title:</strong> {event.title}</p>
+                  <p><strong>Label:</strong> {event.label}</p>
+                  <p><strong>Day:</strong> {new Date(event.day).toDateString()}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
           <button
-            onClick={handleLogCheckedTasks}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-          >
-            Add tasks to your account
+              onClick={handleLogCheckedEvents}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            >
+              Add events to your account
           </button>
-        </h2>
-        <ul className="list-disc pl-6 space-y-4">
-          {data.savedTasks.map((task, index) => (
-            <li key={index} className="text-lg flex items-center">
-              <input
-                type="checkbox"
-                onChange={(e) => handleTaskChange(e, index)}
-                className="mr-2"
-              />
-              <div>
-                <p><strong>Title:</strong> {task.title}</p>
-                <p><strong>Date:</strong> {new Date(task.date).toDateString()}</p>
-                <p><strong>Start Time:</strong> {task.startTime}</p>
-                <p><strong>End Time:</strong> {task.endTime}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+        </div>
+      )}
+
+      {data.savedTasks && data.savedTasks.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-semibold mb-4 flex justify-between items-center">
+            Saved Tasks
+          </h2>
+          <ul className="list-disc pl-6 space-y-4">
+            {data.savedTasks.map((task, index) => (
+              <li key={index} className="text-lg flex items-center">
+                <input
+                  type="checkbox"
+                  onChange={(e) => handleTaskChange(e, index)}
+                  className="mr-2"
+                />
+                <div>
+                  <p><strong>Title:</strong> {task.title}</p>
+                  <p><strong>Date:</strong> {new Date(task.date).toDateString()}</p>
+                  <p><strong>Start Time:</strong> {task.startTime}</p>
+                  <p><strong>End Time:</strong> {task.endTime}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+            <button
+              onClick={handleLogCheckedTasks}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+            >
+              Add tasks to your account
+            </button>
+        </div>
+      )}
     </div>
   );
 }

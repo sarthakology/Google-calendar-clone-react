@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {useTranslation} from "react-i18next";
 
 const ProfilePage = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const profileData = useProfile();
   
   const profile = useMemo(() => profileData || {
@@ -19,7 +19,8 @@ const ProfilePage = () => {
     role: "Error",
     name: "Error",
     phno: 0,
-    profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+    profilePicture: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg",
+    accountStatus: "Public"  // Default to 'Public'
   }, [profileData]);
 
   const [name, setName] = useState(profile.name);
@@ -31,8 +32,9 @@ const ProfilePage = () => {
   const [profilePicture, setProfilePicture] = useState(profile.profilePicture);
   const [imageUpload, setImageUpload] = useState(null);
   const [imgURL, setImgURL] = useState(profile.profilePicture);
+  const [accountStatus, setAccountStatus] = useState(profile.accountStatus); // New field
 
-  const { setLoader, dispatchCalEvent,dispatchTask } = useContext(GlobalContext);
+  const { setLoader, dispatchCalEvent, dispatchTask } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +45,7 @@ const ProfilePage = () => {
     setEmail(profile.email);
     setProfilePicture(profile.profilePicture);
     setImgURL(profile.profilePicture);
+    setAccountStatus(profile.accountStatus); // Initialize the account status
   }, [profile]);
 
   const handleSaveChanges = async () => {
@@ -62,10 +65,10 @@ const ProfilePage = () => {
         const formData = {
           name,
           gender,
-          role,
           phno,
           email,
-          profilePicture: uploadedImageURL // Use the URL of the uploaded image
+          profilePicture: uploadedImageURL, // Use the URL of the uploaded image
+          accountStatus, // Include account status in the payload
         };
         await axios.put('http://localhost:8083/auth/update/user', formData, {
           headers: { 
@@ -170,22 +173,11 @@ const ProfilePage = () => {
               <p className="mt-1 text-gray-900">{gender || "N/A"}</p>
             )}
           </div>
-          {/* role input */}
+
+          {/* Role display (cannot change) */}
           <div>
             <span className="block text-sm font-medium text-gray-700">{t("role")}:</span>
-            {isEditing ? (
-              <select
-                className="mt-1 w-full border rounded px-3 py-2"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              >
-                <option value="">Select Role</option>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            ) : (
-              <p className="mt-1 text-gray-900">{role || "N/A"}</p>
-            )}
+            <p className="mt-1 text-gray-900">{role || "N/A"}</p>
           </div>
 
           {/* Phone number input */}
@@ -215,6 +207,23 @@ const ProfilePage = () => {
               />
             ) : (
               <p className="mt-1 text-gray-900">{email || "N/A"}</p>
+            )}
+          </div>
+
+          {/* Account Status input */}
+          <div>
+            <span className="block text-sm font-medium text-gray-700">Account Status:</span>
+            {isEditing ? (
+              <select
+                className="mt-1 w-full border rounded px-3 py-2"
+                value={accountStatus}
+                onChange={(e) => setAccountStatus(e.target.value)}
+              >
+                <option value="Private">Private</option>
+                <option value="Public">Public</option>
+              </select>
+            ) : (
+              <p className="mt-1 text-gray-900">{accountStatus || "N/A"}</p>
             )}
           </div>
 
