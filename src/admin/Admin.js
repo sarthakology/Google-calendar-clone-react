@@ -4,7 +4,10 @@ import LanguagesAdmin from './LanguagesAdmin';
 import CountriesAdmin from './CountriesAdmin';
 import TimezonesAdmin from './TimezonesAdmin';
 import FormatsAdmin from './FormatsAdmin';
+
+import RoleUpdateAdmin from './RoleUpdateAdmin';
 import {useTranslation} from "react-i18next";
+import DeleteUsersAdmin from './DeleteUsersAdmin';
 
 
 export default function Admin() {
@@ -28,6 +31,8 @@ export default function Admin() {
       <CountriesAdmin />
       <TimezonesAdmin />
       <FormatsAdmin />
+      <RoleUpdateAdmin/>
+      <DeleteUsersAdmin/>
     </div>
   );
 }

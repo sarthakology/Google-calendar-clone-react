@@ -53,6 +53,11 @@ const API_URLS = {
   CREATE_MASTER_TIMEZONE: `${API_BASE_URL}/masters/timezone/create`,
   DELETE_MASTER_TIMEZONE: (Id) => `${API_BASE_URL}/masters/timezone/delete/${Id}`,
   UPDATE_MASTER_TIMEZONE: (Id) => `${API_BASE_URL}/masters/timezone/update/${Id}`,
+  
+  //get all user's role
+  GET_ROLE: `${API_BASE_URL}/admin/users`,
+  UPDATE_ROLE: `${API_BASE_URL}/admin/change-role`,
+  DELETE_USER: `${API_BASE_URL}/admin/delete-user`,
 };
 
 export default API_URLS;
