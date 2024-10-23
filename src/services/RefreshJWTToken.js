@@ -1,12 +1,11 @@
 import axios from 'axios';
-
-
+import API_URLS from '../ApiUrls';
 
 const refreshJWTToken = async (props) => {
   try {
     const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
-          const response = await axios.post('http://localhost:8083/auth/refreshToken', { refreshToken: refreshToken });
+          const response = await axios.post(API_URLS.REFRESH_TOKEN, { refreshToken: refreshToken });
       
           const newAccessToken = response.data.accessToken;
           localStorage.setItem('accessToken', newAccessToken);

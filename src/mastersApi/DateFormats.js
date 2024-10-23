@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import API_URLS from '../ApiUrls';
 
 const useDateFormats = () => {
   const [dateFormatOptions, setDateFormatOptions] = useState([]);
@@ -7,7 +8,7 @@ const useDateFormats = () => {
   useEffect(() => {
     const fetchDateFormats = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/date-formats');
+        const response = await axios.get(API_URLS.GET_MASTER_DATEFORMATS);
         setDateFormatOptions(response.data);
       } catch (error) {
         console.error('Error fetching date formats:', error);

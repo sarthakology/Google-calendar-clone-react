@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import API_URLS from '../ApiUrls';
 
 export default function SearchBox() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -16,7 +17,7 @@ export default function SearchBox() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8083/search/${searchTerm}`);
+            const response = await axios.get(API_URLS.SEARCH_USER_PROFILE(searchTerm));
             if (response.data) {
                 navigate(`/search/${searchTerm}`);
             }

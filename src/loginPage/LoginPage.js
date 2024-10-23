@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from "react-i18next";
+import API_URLS from '../ApiUrls';
 
 export default function LoginPage() {
   const { t } = useTranslation();  
@@ -25,7 +26,7 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8083/auth/token',
+        API_URLS.LOGIN,
         { email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -61,7 +62,7 @@ export default function LoginPage() {
       const accessToken = await refreshJWTToken();
 
       if (accessToken) {
-        const response = await axios.get('http://localhost:8083/auth/event', {
+        const response = await axios.get(API_URLS.GET_USER_EVENTS, {
           headers: { 
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}` 
@@ -84,7 +85,7 @@ export default function LoginPage() {
       const accessToken = await refreshJWTToken();
 
       if (accessToken) {
-        const response = await axios.get('http://localhost:8083/auth/task', {
+        const response = await axios.get(API_URLS.GET_USER_TASKS, {
           headers: { 
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}` 

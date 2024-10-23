@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useTranslation} from "react-i18next";
+import API_URLS from '../ApiUrls';
 
 const CountriesAdmin = () => {
   const {t} = useTranslation();  
@@ -12,7 +13,7 @@ const CountriesAdmin = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/countries');
+        const response = await axios.get(API_URLS.GET_MASTER_COUNTRIES);
         setCountries(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -32,7 +33,7 @@ const CountriesAdmin = () => {
   const handleAddCountry = async () => {
     if (newCountry.trim()) {
       try {
-        const response = await axios.post('http://localhost:8083/masters/country/create', { country: newCountry });
+        const response = await axios.post(API_URLS.CREATE_MASTER_COUNTRIES, { country: newCountry });
         setCountries([...countries, response.data.country]);
         setNewCountry('');
       } catch (err) {
@@ -45,7 +46,7 @@ const CountriesAdmin = () => {
 
   const handleDeleteCountry = async (id) => {
     try {
-      await axios.delete(`http://localhost:8083/masters/country/delete/${id}`);
+      await axios.delete(API_URLS.DELETE_MASTER_COUNTRIES(id));
       setCountries(countries.filter((country) => country.id !== id));
     } catch (err) {
       console.log('Failed to delete country.');
@@ -54,7 +55,7 @@ const CountriesAdmin = () => {
 
   const handleUpdateCountry = async (id, updatedCountry) => {
     try {
-      await axios.put(`http://localhost:8083/masters/country/update/${id}`, { id, country: updatedCountry });
+      await axios.put(API_URLS.UPDATE_MASTER_COUNTRIES(id), { id, country: updatedCountry });
       console.log('Country updated successfully!');
     } catch (err) {
       console.log('Failed to update country.');

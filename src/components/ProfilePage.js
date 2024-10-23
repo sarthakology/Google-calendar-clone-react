@@ -8,6 +8,7 @@ import { uploadFileToFirebase } from "../firebase/FirebaseUpload";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useTranslation} from "react-i18next";
+import API_URLS from '../ApiUrls';
 
 const ProfilePage = () => {
   const { t } = useTranslation();
@@ -70,7 +71,7 @@ const ProfilePage = () => {
           profilePicture: uploadedImageURL, // Use the URL of the uploaded image
           accountStatus, // Include account status in the payload
         };
-        await axios.put('http://localhost:8083/auth/update/user', formData, {
+        await axios.put(API_URLS.UPDATE_USER_PROFILE, formData, {
           headers: { 
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`

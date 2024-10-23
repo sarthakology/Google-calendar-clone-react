@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import API_URLS from '../ApiUrls';
 
 const useCountries = () => {
   const [countryOptions, setCountryOptions] = useState([]);
@@ -7,7 +8,7 @@ const useCountries = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/countries');
+        const response = await axios.get(API_URLS.GET_MASTER_COUNTRIES);
         setCountryOptions(response.data);
       } catch (error) {
         console.error('Error fetching countries:', error);

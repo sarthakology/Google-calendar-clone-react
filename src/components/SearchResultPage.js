@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import GlobalContext from "../context/GlobalContext";
 import { toast } from 'react-toastify';
+import API_URLS from '../ApiUrls';
 
 export default function SearchResultPage() {
   const { username } = useParams();
@@ -24,7 +25,7 @@ export default function SearchResultPage() {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8083/search/${searchTerm}`);
+        const response = await axios.get(API_URLS.SEARCH_USER_PROFILE(searchTerm));
         setData(response.data);
       } catch (error) {
         toast.error('Not found or error occurred');

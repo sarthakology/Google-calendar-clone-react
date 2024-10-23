@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import API_URLS from '../ApiUrls';
 
 const useLanguages = () => {
   const [languageOptions, setLanguageOptions] = useState([]);
@@ -7,7 +8,7 @@ const useLanguages = () => {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/languages');
+        const response = await axios.get(API_URLS.GET_MASTER_LANGUAGES);
         setLanguageOptions(response.data);
       } catch (error) {
         console.error('Error fetching languages:', error);

@@ -4,6 +4,7 @@ import axios from 'axios';
 import {useTranslation} from "react-i18next";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import API_URLS from '../ApiUrls';
 
 export default function RegisterPage() {
   const {t} = useTranslation();  
@@ -23,7 +24,7 @@ export default function RegisterPage() {
         password: password
       };
 
-      axios.post('http://localhost:8083/auth/register', formData)
+      axios.post(API_URLS.REGISTER, formData)
       .then(response => {
         toast.success('Success! You are Registered');
         navigate('/login');

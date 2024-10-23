@@ -10,7 +10,7 @@ const TasksManager = () => {
   const [taskStartTime, setTaskStartTime] = useState("08:00"); // Default start time
   const [taskEndTime, setTaskEndTime] = useState("09:00"); // Default end time
   const [isAllDay, setIsAllDay] = useState(false); // Checkbox for All Day
-  const [taskDescription, setTaskDescription] = useState("");
+  const [taskDescription, setTaskDescription] = useState(" ");
   const [reminder, setReminder] = useState(false); // Checkbox for Reminder Yes/No
   const [editingTask, setEditingTask] = useState(null);
   const [showTaskForm, setShowTaskForm] = useState(false); // Toggle for showing the form

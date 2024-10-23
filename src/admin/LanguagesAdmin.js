@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useTranslation} from "react-i18next";
+import API_URLS from '../ApiUrls';
 
 const LanguagesAdmin = () => {
   const {t} = useTranslation();  
@@ -12,7 +13,7 @@ const LanguagesAdmin = () => {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/languages');
+        const response = await axios.get(API_URLS.GET_MASTER_LANGUAGE);
         setLanguages(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -32,7 +33,7 @@ const LanguagesAdmin = () => {
   const handleAddLanguage = async () => {
     if (newLanguage.trim()) {
       try {
-        const response = await axios.post('http://localhost:8083/masters/language/create', { language: newLanguage });
+        const response = await axios.post(API_URLS.CREATE_MASTER_LANGUAGE, { language: newLanguage });
         setLanguages([...languages, response.data.language]);
         setNewLanguage('');
       } catch (err) {
@@ -45,7 +46,7 @@ const LanguagesAdmin = () => {
 
   const handleDeleteLanguage = async (id) => {
     try {
-      await axios.delete(`http://localhost:8083/masters/language/delete/${id}`);
+      await axios.delete(API_URLS.DELETE_MASTER_LANGUAGE(id));
       setLanguages(languages.filter((language) => language.id !== id));
     } catch (err) {
       console.log('Failed to delete language.');
@@ -54,7 +55,7 @@ const LanguagesAdmin = () => {
 
   const handleUpdateLanguage = async (id, updatedLanguage) => {
     try {
-      await axios.put(`http://localhost:8083/masters/language/update/${id}`, { id, language: updatedLanguage });
+      await axios.put(API_URLS.UPDATE_MASTER_LANGUAGE(id), { id, language: updatedLanguage });
       console.log('Language updated successfully!');
     } catch (err) {
       console.log('Failed to update language.');

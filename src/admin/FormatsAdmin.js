@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useTranslation} from "react-i18next";
+import API_URLS from '../ApiUrls';
 
 const FormatsAdmin = () => {
   const {t} = useTranslation();  
@@ -12,7 +13,7 @@ const FormatsAdmin = () => {
   useEffect(() => {
     const fetchFormats = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/date-formats');
+        const response = await axios.get(API_URLS.GET_MASTER_DATEFORMAT);
         setFormats(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -32,7 +33,7 @@ const FormatsAdmin = () => {
   const handleAddFormat = async () => {
     if (newFormat.trim()) {
       try {
-        const response = await axios.post('http://localhost:8083/masters/date-format/create', { format: newFormat });
+        const response = await axios.post(API_URLS.CREATE_MASTER_DATEFORMAT, { format: newFormat });
         setFormats([...formats, response.data.format]);
         setNewFormat('');
       } catch (err) {
@@ -45,7 +46,7 @@ const FormatsAdmin = () => {
 
   const handleDeleteFormat = async (id) => {
     try {
-      await axios.delete(`http://localhost:8083/masters/date-format/delete/${id}`);
+      await axios.delete(API_URLS.DELETE_MASTER_DATEFORMAT(id));
       setFormats(formats.filter((format) => format.id !== id));
     } catch (err) {
       console.log('Failed to delete format.');
@@ -54,7 +55,7 @@ const FormatsAdmin = () => {
 
   const handleUpdateFormat = async (id, updatedFormat) => {
     try {
-      await axios.put(`http://localhost:8083/masters/date-format/update/${id}`, { id, format: updatedFormat });
+      await axios.put(API_URLS.UPDATE_MASTER_DATEFORMAT(id), { id, format: updatedFormat });
       console.log('Format updated successfully!');
     } catch (err) {
       console.log('Failed to update format.');

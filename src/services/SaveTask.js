@@ -1,6 +1,6 @@
 import axios from 'axios';
 import refreshJWTToken from './RefreshJWTToken';
-
+import API_URLS from '../ApiUrls';
 const saveTask = async (tasks) => {
     try {
         const accessToken = await refreshJWTToken();
@@ -16,7 +16,7 @@ const saveTask = async (tasks) => {
         }
 
         const response = await axios.put(
-            'http://localhost:8083/auth/save-task',
+            API_URLS.UPDATE_USER_TASKS,
             savedTasks,
             {
                 headers: {

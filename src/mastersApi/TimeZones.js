@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-
+import API_URLS from '../ApiUrls';
 const useTimezones = () => {
   const [timezoneOptions, setTimezoneOptions] = useState([]);
 
   useEffect(() => {
     const fetchTimezones = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/timezones');
+        const response = await axios.get(API_URLS.GET_MASTER_TIMEZONES);
         setTimezoneOptions(response.data);
       } catch (error) {
         console.error('Error fetching timezones:', error);

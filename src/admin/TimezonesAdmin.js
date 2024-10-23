@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useTranslation} from "react-i18next";
+import API_URLS from '../ApiUrls';
 
 const TimezonesAdmin = () => {
   const {t} = useTranslation();  
@@ -12,7 +13,7 @@ const TimezonesAdmin = () => {
   useEffect(() => {
     const fetchTimezones = async () => {
       try {
-        const response = await axios.get('http://localhost:8083/masters/timezones');
+        const response = await axios.get(API_URLS.GET_MASTER_TIMEZONE);
         setTimezones(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -32,7 +33,7 @@ const TimezonesAdmin = () => {
   const handleAddTimezone = async () => {
     if (newTimezone.trim()) {
       try {
-        const response = await axios.post('http://localhost:8083/masters/timezone/create', { timezone: newTimezone });
+        const response = await axios.post(API_URLS.CREATE_MASTER_TIMEZONE, { timezone: newTimezone });
         setTimezones([...timezones, response.data.timezone]);
         setNewTimezone('');
       } catch (err) {
@@ -45,7 +46,7 @@ const TimezonesAdmin = () => {
 
   const handleDeleteTimezone = async (id) => {
     try {
-      await axios.delete(`http://localhost:8083/masters/timezone/delete/${id}`);
+      await axios.delete(API_URLS.DELETE_MASTER_TIMEZONE(id));
       setTimezones(timezones.filter((timezone) => timezone.id !== id));
     } catch (err) {
       console.log('Failed to delete timezone.');
@@ -54,7 +55,7 @@ const TimezonesAdmin = () => {
 
   const handleUpdateTimezone = async (id, updatedTimezone) => {
     try {
-      await axios.put(`http://localhost:8083/masters/timezone/update/${id}`, { id, timezone: updatedTimezone });
+      await axios.put(API_URLS.UPDATE_MASTER_TIMEZONE(id), { id, timezone: updatedTimezone });
       console.log('Timezone updated successfully!');
     } catch (err) {
       console.log('Failed to update timezone.');

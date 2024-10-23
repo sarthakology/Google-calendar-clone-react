@@ -1,7 +1,7 @@
 import axios from 'axios';
 import refreshJWTToken from './RefreshJWTToken';
 import API_URLS from '../ApiUrls';
-const DeleteEvent = async (props) => {
+const DeleteTask = async (props) => {
   try {
 
     const accessToken = await refreshJWTToken();
@@ -13,7 +13,7 @@ const DeleteEvent = async (props) => {
 
 
     const response = await axios.delete(
-      API_URLS.DELETE_EVENT(props),
+      API_URLS.DELETE_TASK(props),
       {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -22,15 +22,15 @@ const DeleteEvent = async (props) => {
     );
 
     if (response.status === 200) {
-      console.log('Event deleted successfully:', response.data);
+      console.log('Task deleted successfully:', response.data);
     } else {
-      console.error('Error deleting event:', response.data.message);
+      console.error('Error deleting Task:', response.data.message);
     }
   } catch (error) {
-    console.error('An error occurred while deleting the event:', error);
+    console.error('An error occurred while deleting the Task:', error);
   }
 
   return null;
 };
 
-export default DeleteEvent;
+export default DeleteTask;

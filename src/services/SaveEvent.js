@@ -1,5 +1,6 @@
 import axios from 'axios';
 import refreshJWTToken from './RefreshJWTToken';
+import API_URLS from '../ApiUrls';
 
 const saveEvent = async (props) => {
     try {
@@ -16,7 +17,7 @@ const saveEvent = async (props) => {
         }
 
         const response = await axios.put(
-            'http://localhost:8083/auth/save-event',
+            API_URLS.UPDATE_USER_EVENTS,
             savedEvents,
             {
                 headers: {
