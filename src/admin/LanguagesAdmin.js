@@ -87,7 +87,7 @@ const LanguagesAdmin = () => {
               type="text"
               value={language.language}
               onChange={(e) => handleLanguageChange(index, e.target.value)}
-              className="border rounded p-2 w-full"
+              className="border rounded p-2"
             />
             <button
               onClick={() => handleDeleteLanguage(language.id)}
@@ -104,7 +104,7 @@ const LanguagesAdmin = () => {
           value={newLanguage}
           onChange={(e) => setNewLanguage(e.target.value)}
           placeholder={t("newlanguage")}
-          className="border rounded p-2 w-full mb-4"
+          className="border rounded p-2 mb-4"
         />
         <button
           onClick={handleAddLanguage}

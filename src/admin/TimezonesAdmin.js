@@ -87,7 +87,7 @@ const TimezonesAdmin = () => {
               type="text"
               value={timezone.timezone}
               onChange={(e) => handleTimezoneChange(index, e.target.value)}
-              className="border rounded p-2 w-full"
+              className="border rounded p-2"
             />
             <button
               onClick={() => handleDeleteTimezone(timezone.id)}
@@ -104,7 +104,7 @@ const TimezonesAdmin = () => {
           value={newTimezone}
           onChange={(e) => setNewTimezone(e.target.value)}
           placeholder={t("newtimezone")}
-          className="border rounded p-2 w-full mb-4"
+          className="border rounded p-2 mb-4"
         />
         <button
           onClick={handleAddTimezone}

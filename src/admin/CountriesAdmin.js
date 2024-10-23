@@ -87,7 +87,7 @@ const CountriesAdmin = () => {
               type="text"
               value={country.country}
               onChange={(e) => handleCountryChange(index, e.target.value)}
-              className="border rounded p-2 w-full"
+              className="border rounded p-2"
             />
             <button
               onClick={() => handleDeleteCountry(country.id)}
@@ -104,7 +104,7 @@ const CountriesAdmin = () => {
           value={newCountry}
           onChange={(e) => setNewCountry(e.target.value)}
           placeholder={t("newcountry")}
-          className="border rounded p-2 w-full mb-4"
+          className="border rounded p-2 mb-4"
         />
         <button
           onClick={handleAddCountry}

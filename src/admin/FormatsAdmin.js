@@ -87,7 +87,7 @@ const FormatsAdmin = () => {
               type="text"
               value={format.format}
               onChange={(e) => handleFormatChange(index, e.target.value)}
-              className="border rounded p-2 w-full"
+              className="border rounded p-2"
             />
             <button
               onClick={() => handleDeleteFormat(format.id)}
