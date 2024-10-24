@@ -7,7 +7,7 @@ const useTimezones = () => {
   useEffect(() => {
     const fetchTimezones = async () => {
       try {
-        const response = await axios.get(API_URLS.GET_MASTER_TIMEZONES);
+        const response = await axios.get(API_URLS.GET_MASTER_TIMEZONE);
         setTimezoneOptions(response.data);
       } catch (error) {
         console.error('Error fetching timezones:', error);

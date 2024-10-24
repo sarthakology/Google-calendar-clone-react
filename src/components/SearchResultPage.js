@@ -79,15 +79,15 @@ export default function SearchResultPage() {
       <h1 className="text-3xl font-bold mb-6 text-center">User Details</h1>
       <div className="mb-6 text-center">
         <img
-          src={data.profilePicture}
+          src={data.credentials.profilePicture}
           alt="Profile"
           className="w-32 h-32 rounded-full mb-4 mx-auto"
         />
-        <p className="text-xl"><strong>Name:</strong> {data.name}</p>
-        <p className="text-xl"><strong>Email:</strong> {data.email}</p>
-        <p className="text-xl"><strong>Gender:</strong> {data.gender}</p>
-        <p className="text-xl"><strong>Phone Number:</strong> {data.phno}</p>
-        <p className="text-xl"><strong>Role:</strong> {data.role}</p>
+        <p className="text-xl"><strong>Name:</strong> {data.credentials.name}</p>
+        <p className="text-xl"><strong>Email:</strong> {data.credentials.email}</p>
+        <p className="text-xl"><strong>Gender:</strong> {data.credentials.gender}</p>
+        <p className="text-xl"><strong>Phone Number:</strong> {data.credentials.phno}</p>
+        <p className="text-xl"><strong>Role:</strong> {data.credentials.role}</p>
       </div>
 
 

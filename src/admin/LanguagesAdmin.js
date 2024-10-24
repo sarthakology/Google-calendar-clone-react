@@ -33,6 +33,7 @@ const LanguagesAdmin = () => {
   const handleAddLanguage = async () => {
     if (newLanguage.trim()) {
       try {
+        console.log({ language: newLanguage })
         const response = await axios.post(API_URLS.CREATE_MASTER_LANGUAGE, { language: newLanguage });
         setLanguages([...languages, response.data.language]);
         setNewLanguage('');

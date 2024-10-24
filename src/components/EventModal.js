@@ -51,8 +51,9 @@ export default function EventModal() {
   }
 
   function handelDelete(){
-      dispatchCalEvent({ type: "delete", payload: selectedEvent });
+    
       DeleteEvent(selectedEvent.id)
+      dispatchCalEvent({ type: "delete", payload: selectedEvent });
       setShowEventModal(false);
   }
   return (

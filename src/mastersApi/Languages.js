@@ -8,7 +8,7 @@ const useLanguages = () => {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await axios.get(API_URLS.GET_MASTER_LANGUAGES);
+        const response = await axios.get(API_URLS.GET_MASTER_LANGUAGE);
         setLanguageOptions(response.data);
       } catch (error) {
         console.error('Error fetching languages:', error);

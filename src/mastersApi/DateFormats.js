@@ -8,7 +8,7 @@ const useDateFormats = () => {
   useEffect(() => {
     const fetchDateFormats = async () => {
       try {
-        const response = await axios.get(API_URLS.GET_MASTER_DATEFORMATS);
+        const response = await axios.get(API_URLS.GET_MASTER_DATEFORMAT);
         setDateFormatOptions(response.data);
       } catch (error) {
         console.error('Error fetching date formats:', error);
