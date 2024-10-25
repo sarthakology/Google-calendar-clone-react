@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import API_URLS from '../ApiUrls';
+import { toast } from 'react-toastify';
 
 const TimezonesAdmin = () => {
-  const {t} = useTranslation();  
+  const { t } = useTranslation();  
   const [timezones, setTimezones] = useState([]);
   const [newTimezone, setNewTimezone] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -15,14 +17,14 @@ const TimezonesAdmin = () => {
       try {
         const response = await axios.get(API_URLS.GET_MASTER_TIMEZONE);
         setTimezones(response.data);
-        setIsLoading(false);
       } catch (err) {
-        setError('Failed to load timezones.');
+        setError(t("Failed to load timezones."));
+      } finally {
         setIsLoading(false);
       }
     };
     fetchTimezones();
-  }, []);
+  }, [t]);
 
   const handleTimezoneChange = (index, updatedTimezone) => {
     const updatedTimezones = [...timezones];
@@ -31,34 +33,51 @@ const TimezonesAdmin = () => {
   };
 
   const handleAddTimezone = async () => {
-    if (newTimezone.trim()) {
-      try {
-        const response = await axios.post(API_URLS.CREATE_MASTER_TIMEZONE, { timezone: newTimezone });
-        setTimezones([...timezones, response.data.timezone]);
-        setNewTimezone('');
-      } catch (err) {
-        console.log('Failed to create timezone.');
-      }
-    } else {
-      console.log('Timezone cannot be empty!');
+    if (!newTimezone.trim()) {
+      toast.warning(t("Timezone cannot be empty!"));
+      return;
+    }
+
+    if (timezones.some(tz => tz.timezone === newTimezone)) {
+      toast.warning(t("Timezone already exists!"));
+      return;
+    }
+
+    try {
+      setActionLoading(true);
+      const response = await axios.post(API_URLS.CREATE_MASTER_TIMEZONE, { timezone: newTimezone });
+      setTimezones([...timezones, response.data.timezone]);
+      setNewTimezone('');
+      toast.success(t("Timezone added successfully!"));
+    } catch (err) {
+      toast.error(t("Failed to create timezone."));
+    } finally {
+      setActionLoading(false);
     }
   };
 
   const handleDeleteTimezone = async (id) => {
     try {
+      setActionLoading(true);
       await axios.delete(API_URLS.DELETE_MASTER_TIMEZONE(id));
       setTimezones(timezones.filter((timezone) => timezone.id !== id));
+      toast.success(t("Timezone deleted successfully!"));
     } catch (err) {
-      console.log('Failed to delete timezone.');
+      toast.error(t("Failed to delete timezone."));
+    } finally {
+      setActionLoading(false);
     }
   };
 
   const handleUpdateTimezone = async (id, updatedTimezone) => {
     try {
+      setActionLoading(true);
       await axios.put(API_URLS.UPDATE_MASTER_TIMEZONE(id), { id, timezone: updatedTimezone });
-      console.log('Timezone updated successfully!');
+      toast.success(t("Timezone updated successfully!"));
     } catch (err) {
-      console.log('Failed to update timezone.');
+      toast.error(t("Failed to update timezone."));
+    } finally {
+      setActionLoading(false);
     }
   };
 
@@ -67,9 +86,9 @@ const TimezonesAdmin = () => {
       for (const timezone of timezones) {
         await handleUpdateTimezone(timezone.id, timezone.timezone);
       }
-      console.log('Timezones updated successfully!');
+      toast.success(t("All timezones updated successfully!"));
     } catch (err) {
-      console.log('Failed to update timezones.');
+      toast.error(t("Failed to update timezones."));
     }
   };
 
@@ -92,6 +111,7 @@ const TimezonesAdmin = () => {
             <button
               onClick={() => handleDeleteTimezone(timezone.id)}
               className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+              disabled={actionLoading}
             >
               {t("delete")}
             </button>
@@ -109,6 +129,7 @@ const TimezonesAdmin = () => {
         <button
           onClick={handleAddTimezone}
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          disabled={actionLoading}
         >
           {t("addTimezone")}
         </button>
@@ -116,6 +137,7 @@ const TimezonesAdmin = () => {
       <button
         onClick={handleSubmit}
         className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        disabled={actionLoading}
       >
         {t("saveChanges")}
       </button>

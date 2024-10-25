@@ -26,10 +26,10 @@ const API_URLS = {
   DELETE_EVENT: (eventId) => `${API_BASE_URL}/event/${eventId}/trash`,
   DELETE_TASK: (taskId) => `${API_BASE_URL}/task/delete/${taskId}`,
   
-  //trash / view user,s deleted events
-
+  //trash / view user's deleted events
   TRASH: `${API_BASE_URL}/event/trashed`,
-  // TRASH: `'http://localhost:8087/event/trashed'`,
+  DELETE_TRASH_EVENT: (id) => `${API_BASE_URL}/event/trash/${id}/delete`,
+
   //                      admin only 
 
 

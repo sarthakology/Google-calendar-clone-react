@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import API_URLS from '../ApiUrls';
+import { toast } from 'react-toastify';
 
 const LanguagesAdmin = () => {
-  const {t} = useTranslation();  
+  const { t } = useTranslation();  
   const [languages, setLanguages] = useState([]);
   const [newLanguage, setNewLanguage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -15,9 +16,10 @@ const LanguagesAdmin = () => {
       try {
         const response = await axios.get(API_URLS.GET_MASTER_LANGUAGE);
         setLanguages(response.data);
-        setIsLoading(false);
       } catch (err) {
         setError('Failed to load languages.');
+        toast.error('Failed to load languages.');
+      } finally {
         setIsLoading(false);
       }
     };
@@ -33,15 +35,15 @@ const LanguagesAdmin = () => {
   const handleAddLanguage = async () => {
     if (newLanguage.trim()) {
       try {
-        console.log({ language: newLanguage })
         const response = await axios.post(API_URLS.CREATE_MASTER_LANGUAGE, { language: newLanguage });
         setLanguages([...languages, response.data.language]);
         setNewLanguage('');
+        toast.success('Language added successfully!');
       } catch (err) {
-        console.log('Failed to create language.');
+        toast.error('Failed to create language.');
       }
     } else {
-      console.log('Language cannot be empty!');
+      toast.error('Language cannot be empty!');
     }
   };
 
@@ -49,17 +51,18 @@ const LanguagesAdmin = () => {
     try {
       await axios.delete(API_URLS.DELETE_MASTER_LANGUAGE(id));
       setLanguages(languages.filter((language) => language.id !== id));
+      toast.success('Language deleted successfully!');
     } catch (err) {
-      console.log('Failed to delete language.');
+      toast.error('Failed to delete language.');
     }
   };
 
   const handleUpdateLanguage = async (id, updatedLanguage) => {
     try {
       await axios.put(API_URLS.UPDATE_MASTER_LANGUAGE(id), { id, language: updatedLanguage });
-      console.log('Language updated successfully!');
+      toast.success('Language updated successfully!');
     } catch (err) {
-      console.log('Failed to update language.');
+      toast.error('Failed to update language.');
     }
   };
 
@@ -68,9 +71,9 @@ const LanguagesAdmin = () => {
       for (const language of languages) {
         await handleUpdateLanguage(language.id, language.language);
       }
-      console.log('Languages updated successfully!');
+      toast.success('All languages updated successfully!');
     } catch (err) {
-      console.log('Failed to update languages.');
+      toast.error('Failed to update languages.');
     }
   };
 

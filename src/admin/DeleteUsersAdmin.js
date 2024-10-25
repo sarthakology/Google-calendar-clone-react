@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import API_URLS from '../ApiUrls';
+import { toast } from 'react-toastify';
 
 export default function DeleteUsersAdmin() {
   const [users, setUsers] = useState([]);
@@ -14,23 +15,23 @@ export default function DeleteUsersAdmin() {
         const response = await axios.get(API_URLS.GET_ROLE);
         setUsers(response.data);
       } catch (error) {
+        toast.error('Failed to fetch users.');
         setError('Failed to fetch users.');
-        console.error('Error fetching users:', error);
       } finally {
         setLoading(false);
       }
     };
     fetchUsers();
   }, []);
-
+  
   // Delete user account immediately without confirmation
   const handleDelete = async (email) => {
     try {
       await axios.delete(API_URLS.DELETE_USER(email));
-      console.log(`User with email ${email} deleted successfully`);
+      toast.success(`User with email ${email} deleted successfully`);
       setUsers(users.filter(user => user.email !== email)); // Update UI
     } catch (error) {
-      console.error('Error deleting user:', error);
+      toast.error('Error deleting user.');
     }
   };
 

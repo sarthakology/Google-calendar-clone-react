@@ -85,8 +85,6 @@ export default function SearchResultPage() {
         />
         <p className="text-xl"><strong>Name:</strong> {data.credentials.name}</p>
         <p className="text-xl"><strong>Email:</strong> {data.credentials.email}</p>
-        <p className="text-xl"><strong>Gender:</strong> {data.credentials.gender}</p>
-        <p className="text-xl"><strong>Phone Number:</strong> {data.credentials.phno}</p>
         <p className="text-xl"><strong>Role:</strong> {data.credentials.role}</p>
       </div>
 

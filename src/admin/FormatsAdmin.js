@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import API_URLS from '../ApiUrls';
+import { toast } from 'react-toastify';
 
 const FormatsAdmin = () => {
-  const {t} = useTranslation();  
+  const { t } = useTranslation();  
   const [formats, setFormats] = useState([]);
   const [newFormat, setNewFormat] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -15,9 +16,10 @@ const FormatsAdmin = () => {
       try {
         const response = await axios.get(API_URLS.GET_MASTER_DATEFORMAT);
         setFormats(response.data);
-        setIsLoading(false);
       } catch (err) {
         setError('Failed to load formats.');
+        toast.error('Failed to load formats.');
+      } finally {
         setIsLoading(false);
       }
     };
@@ -36,11 +38,12 @@ const FormatsAdmin = () => {
         const response = await axios.post(API_URLS.CREATE_MASTER_DATEFORMAT, { format: newFormat });
         setFormats([...formats, response.data.format]);
         setNewFormat('');
+        toast.success('Format added successfully!');
       } catch (err) {
-        console.log('Failed to create format.');
+        toast.error('Failed to create format.');
       }
     } else {
-      console.log('Format cannot be empty!');
+      toast.error('Format cannot be empty!');
     }
   };
 
@@ -48,17 +51,18 @@ const FormatsAdmin = () => {
     try {
       await axios.delete(API_URLS.DELETE_MASTER_DATEFORMAT(id));
       setFormats(formats.filter((format) => format.id !== id));
+      toast.success('Format deleted successfully!');
     } catch (err) {
-      console.log('Failed to delete format.');
+      toast.error('Failed to delete format.');
     }
   };
 
   const handleUpdateFormat = async (id, updatedFormat) => {
     try {
       await axios.put(API_URLS.UPDATE_MASTER_DATEFORMAT(id), { id, format: updatedFormat });
-      console.log('Format updated successfully!');
+      toast.success('Format updated successfully!');
     } catch (err) {
-      console.log('Failed to update format.');
+      toast.error('Failed to update format.');
     }
   };
 
@@ -67,9 +71,9 @@ const FormatsAdmin = () => {
       for (const format of formats) {
         await handleUpdateFormat(format.id, format.format);
       }
-      console.log('Formats updated successfully!');
+      toast.success('All formats updated successfully!');
     } catch (err) {
-      console.log('Failed to update formats.');
+      toast.error('Failed to update formats.');
     }
   };
 

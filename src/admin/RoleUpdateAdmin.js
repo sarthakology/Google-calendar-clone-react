@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import API_URLS from '../ApiUrls';
+import { toast } from 'react-toastify';
 
 export default function RoleUpdateAdmin() {
   const [users, setUsers] = useState([]);
   const [updatedRoles, setUpdatedRoles] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -13,6 +15,9 @@ export default function RoleUpdateAdmin() {
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
+        toast.error('Failed to fetch users.');
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchUsers();
@@ -32,12 +37,17 @@ export default function RoleUpdateAdmin() {
         email,
         role: newRole,
       });
-      console.log(`Role updated for ${email}`);
+      setUsers(users.map((user) =>
+        user.email === email ? { ...user, role: newRole } : user
+      ));
+      toast.success(`Role updated for ${email}`);
     } catch (error) {
       console.error('Error updating role:', error);
-      alert('Error updating role');
+      toast.error('Failed to update role.');
     }
   };
+
+  if (isLoading) return <div>Loading users...</div>;
 
   return (
     <div className="container mx-auto p-6">

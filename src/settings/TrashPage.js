@@ -3,20 +3,21 @@ import axios from 'axios';
 import API_URLS from '../ApiUrls';
 import refreshJWTToken from '../services/RefreshJWTToken';
 import GlobalContext from "../context/GlobalContext";
+import { toast } from 'react-toastify'; // Import toast
 
 const TrashedEvents = () => {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedEvents, setSelectedEvents] = useState([]); // State to track selected events
-  const { dispatchCalEvent } = useContext(GlobalContext); // Access global context
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const { dispatchCalEvent } = useContext(GlobalContext);
 
   useEffect(() => {
     const fetchTrashedEvents = async () => {
       const accessToken = await refreshJWTToken();
       if (!accessToken) {
         return;
-      }
+      } 
       try {
         const response = await axios.get(API_URLS.TRASH, {
           headers: {
@@ -28,6 +29,7 @@ const TrashedEvents = () => {
       } catch (err) {
         setError('Failed to load trashed events.');
         setIsLoading(false);
+        toast.error('Failed to load trashed events.'); // Show toast on error
       }
     };
     fetchTrashedEvents();
@@ -48,7 +50,7 @@ const TrashedEvents = () => {
     }
     try {
       for (const eventId of selectedEvents) {
-        await axios.put(`http://localhost:8083/event/trash/${eventId}/delete`, {}, {
+        await axios.put(API_URLS.DELETE_TRASH_EVENT(eventId), {}, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
@@ -62,23 +64,25 @@ const TrashedEvents = () => {
         }
       });
       setEvents(response.data);
+      toast.success('Selected events deleted successfully!'); // Show success toast
     } catch (err) {
-      console.log('Failed to delete events.');
+      toast.error('Failed to delete events.'); // Show error toast
     }
   };
 
-  const handleRestoreEvents = () => {
+  const handleRestoreEvents = async () => {
     const selectedEventObjects = selectedEvents.map(eventId => {
       const event = events.find(e => e.id === eventId);
-      const { deletedAt, ...rest } = event; // Destructure to remove the 'deletedAt' field
+      const { deletedAt, ...rest } = event;
       return rest;
     });
 
-    handleDeleteEvents()
+    await handleDeleteEvents(); // Make sure to await this
     selectedEventObjects.forEach(event => {
       dispatchCalEvent({ type: "push", payload: event });
     });
     setSelectedEvents([]); // Clear selected events after dispatch
+    toast.success('Selected events restored successfully!'); // Show success toast
   };
 
   if (isLoading) return <div className="text-center py-4">Loading...</div>;
@@ -120,20 +124,18 @@ const TrashedEvents = () => {
         </table>
       </div>
 
-      {/* Button for deleting selected events */}
       <button
         onClick={handleDeleteEvents}
         className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-        disabled={selectedEvents.length === 0} // Disable button if no events are selected
+        disabled={selectedEvents.length === 0}
       >
         Delete Selected Events
       </button>
 
-      {/* Button for restoring selected events */}
       <button
         onClick={handleRestoreEvents}
         className="mt-6 ml-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        disabled={selectedEvents.length === 0} // Disable button if no events are selected
+        disabled={selectedEvents.length === 0}
       >
         Restore Selected Events
       </button>

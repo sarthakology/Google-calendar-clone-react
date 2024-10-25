@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import API_URLS from '../ApiUrls';
+import { toast } from 'react-toastify';
 
 const CountriesAdmin = () => {
-  const {t} = useTranslation();  
+  const { t } = useTranslation();  
   const [countries, setCountries] = useState([]);
   const [newCountry, setNewCountry] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +18,7 @@ const CountriesAdmin = () => {
         setCountries(response.data);
         setIsLoading(false);
       } catch (err) {
+        toast.error('Failed to load countries.');
         setError('Failed to load countries.');
         setIsLoading(false);
       }
@@ -36,40 +38,42 @@ const CountriesAdmin = () => {
         const response = await axios.post(API_URLS.CREATE_MASTER_COUNTRIES, { country: newCountry });
         setCountries([...countries, response.data.country]);
         setNewCountry('');
+        toast.success('Country added successfully!');
       } catch (err) {
-        console.log('Failed to create country.');
+        toast.error('Failed to create country.');
       }
     } else {
-      console.log('Country cannot be empty!');
+      toast.error('Country cannot be empty!');
     }
   };
-
+  
   const handleDeleteCountry = async (id) => {
     try {
       await axios.delete(API_URLS.DELETE_MASTER_COUNTRIES(id));
       setCountries(countries.filter((country) => country.id !== id));
+      toast.success('Country deleted successfully!');
     } catch (err) {
-      console.log('Failed to delete country.');
+      toast.error('Failed to delete country.');
     }
   };
-
+  
   const handleUpdateCountry = async (id, updatedCountry) => {
     try {
       await axios.put(API_URLS.UPDATE_MASTER_COUNTRIES(id), { id, country: updatedCountry });
-      console.log('Country updated successfully!');
+      toast.success('Country updated successfully!');
     } catch (err) {
-      console.log('Failed to update country.');
+      toast.error('Failed to update country.');
     }
   };
-
+  
   const handleSubmit = async () => {
     try {
       for (const country of countries) {
         await handleUpdateCountry(country.id, country.country);
       }
-      console.log('Countries updated successfully!');
+      toast.success('Countries updated successfully!');
     } catch (err) {
-      console.log('Failed to update countries.');
+      toast.error('Failed to update countries.');
     }
   };
 
