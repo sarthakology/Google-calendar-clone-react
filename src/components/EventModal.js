@@ -1,61 +1,65 @@
 import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
-import {useTranslation} from "react-i18next";
 import DeleteEvent from "../services/DeleteEvent";
-const labelsClasses = [
-  "indigo",
-  "gray",
-  "green",
-  "blue",
-  "red",
-  "purple",
-];
+import { useTranslation } from "react-i18next";
+
+const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
 
 export default function EventModal() {
-  const {t} = useTranslation();  
-  const {
-    setShowEventModal,
-    daySelected,
-    dispatchCalEvent,
-    selectedEvent,
-  } = useContext(GlobalContext);
-
-  const [title, setTitle] = useState(
-    selectedEvent ? selectedEvent.title : ""
-  );
-  const [description, setDescription] = useState(
-    selectedEvent ? selectedEvent.description : ""
-  );
-  const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent
-      ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-      : labelsClasses[0]
-  );
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    const calendarEvent = {
-      title,
-      description,
-      label: selectedLabel,
-      day: daySelected.valueOf(),
-      id: selectedEvent ? selectedEvent.id : Date.now(),
-    };
-    if (selectedEvent) {
-      dispatchCalEvent({ type: "update", payload: calendarEvent });
-    } else {
-      dispatchCalEvent({ type: "push", payload: calendarEvent });
+  const { t } = useTranslation();
+  const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent } = useContext(GlobalContext);
+  
+    const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
+    const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
+    const [selectedLabel, setSelectedLabel] = useState(
+      selectedEvent ? labelsClasses.find((lbl) => lbl === selectedEvent.label) : labelsClasses[0]
+    );
+    const [guestEmails, setGuestEmails] = useState(
+      selectedEvent ? selectedEvent.guests?.map((guest) => guest.email) || [""] : [""]
+    );
+  
+    function handleGuestChange(index, value) {
+      const updatedGuests = [...guestEmails];
+      updatedGuests[index] = value;
+      setGuestEmails(updatedGuests);
     }
-
-    setShowEventModal(false);
-  }
-
-  function handelDelete(){
-    
-      DeleteEvent(selectedEvent.id)
+  
+    function addGuestField() {
+      setGuestEmails([...guestEmails, ""]);
+    }
+  
+    function removeGuestField(index) {
+      setGuestEmails(guestEmails.filter((_, i) => i !== index));
+    }
+  
+    function handleSubmit(e) {
+      e.preventDefault();
+      const calendarEvent = {
+        title,
+        description,
+        label: selectedLabel,
+        day: daySelected.valueOf(),
+        id: selectedEvent ? selectedEvent.id : Date.now(),
+        guests: guestEmails
+          .filter((email) => email !== "")
+          .map((email) => ({ email })),  // Save in correct format for backend
+      };
+  
+      if (selectedEvent) {
+        dispatchCalEvent({ type: "update", payload: calendarEvent });
+      } else {
+        dispatchCalEvent({ type: "push", payload: calendarEvent });
+      }
+      console.log(calendarEvent)
+      setShowEventModal(false);
+    }
+  
+    function handelDelete() {
+      DeleteEvent(selectedEvent.id);
       dispatchCalEvent({ type: "delete", payload: selectedEvent });
       setShowEventModal(false);
-  }
+    }
+
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
       <form className="bg-white rounded-lg shadow-2xl w-1/4">
@@ -124,6 +128,35 @@ export default function EventModal() {
                   )}
                 </span>
               ))}
+            </div>
+            {/* Guest Emails Section */}
+            <span className="material-icons-outlined text-gray-400">person_add</span>
+            <div className="space-y-2">
+              {guestEmails.map((email, index) => (
+                <div key={index} className="flex items-center gap-x-2">
+                  <input
+                    type="email"
+                    placeholder="add guest email"
+                    value={email}
+                    onChange={(e) => handleGuestChange(index, e.target.value)}
+                    className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeGuestField(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addGuestField}
+                className="text-blue-500 hover:text-blue-700"
+              >
+                add guest
+              </button>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ const saveEvent = async (props) => {
 
         const savedEvents = props;
 
+
         if (!savedEvents || !Array.isArray(savedEvents)) {
             throw new Error('No valid saved events found in localStorage');
         }
