@@ -53,11 +53,14 @@ export default function SearchResultPage() {
   };
 
   const handleLogCheckedEvents = () => {
-    checkedEvents.forEach(event => {
-        dispatchCalEvent({ type: "push", payload: event });
-      });
-      toast.success('Events added to your Account Successfully!');
+    checkedEvents.forEach((event) => {
+      const newEvent = { ...event, id: Date.now() + Math.random() };
+      dispatchCalEvent({ type: "push", payload: newEvent });
+    });
+    
+    toast.success('Events added to your Account Successfully!');
   };
+  
     
   const handleLogCheckedTasks = () => {
     checkedTasks.forEach(task => {
