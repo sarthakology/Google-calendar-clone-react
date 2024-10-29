@@ -7,9 +7,6 @@ import EventModal from "../components/EventModal";
 import EventsPage from "../components/EventsPage";
 import GlobalContext from "../context/GlobalContext";
 import { getMonth } from "../util";
-import HelpPage from "../SupportPages/HelpPage";
-import SendFeedbackToGooglePage from "../SupportPages/SendFeedbackToGooglePage";
-import TrainingPage from "../SupportPages/TrainingPage";
 import UpdatesPage from "../SupportPages/UpdatesPage";
 import MainSettingsPage from "../settings/MainSettingsPage";
 import TrashPage from "../settings/TrashPage";
@@ -105,10 +102,7 @@ const AppRoutes = () => {
         {/* Admin */}
         <Route path="/admin" element={<><CalendarHeader /><Admin/> </>} />
         {/* Support Pages */}
-        <Route path="/help" element={<><CalendarHeader /><HelpPage /></>} />
-        <Route path="/training" element={<><CalendarHeader /><TrainingPage /></>} />
         <Route path="/updates" element={<><CalendarHeader /><UpdatesPage /></>} />
-        <Route path="/feedback" element={<><CalendarHeader /><SendFeedbackToGooglePage /></>} />
 
         {/* Settings Pages */}
         <Route path="/setting" element={<><CalendarHeader /><MainSettingsPage /></>} />

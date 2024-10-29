@@ -59,7 +59,7 @@ export default function CreateEventButton() {
             className="block w-full text-left px-4 py-2 hover:bg-gray-100"
             role="menuitem"
           >
-            create event
+            {t("createevent")}
           </button>
           <button
             onClick={() => {
@@ -69,7 +69,7 @@ export default function CreateEventButton() {
             className="block w-full text-left px-4 py-2 hover:bg-gray-100"
             role="menuitem"
           >
-            task
+            {t("task")}
           </button>
         </div>
       )}

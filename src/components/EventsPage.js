@@ -23,7 +23,7 @@ export default function EventsPage() {
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-5">
 {savedTasks.length > 0 ? (
-      <h1 className="text-4xl font-bold text-gray-800 mb-10">Tasks</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-10">{t("Tasks")}</h1>
     ) :<></>}
       {/* Display Tasks Section */}
       <div className="w-full max-w-4xl mb-10">

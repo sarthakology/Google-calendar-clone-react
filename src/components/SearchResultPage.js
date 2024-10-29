@@ -4,8 +4,10 @@ import axios from 'axios';
 import GlobalContext from "../context/GlobalContext";
 import { toast } from 'react-toastify';
 import API_URLS from '../ApiUrls';
+import {useTranslation} from "react-i18next";
 
 export default function SearchResultPage() {
+  const { t } = useTranslation();
   const { username } = useParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -79,7 +81,7 @@ export default function SearchResultPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">User Details</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">{t("UserDetails")}</h1>
       <div className="mb-6 text-center">
         <img
           src={data.credentials.profilePicture}
@@ -95,7 +97,7 @@ export default function SearchResultPage() {
       {data.savedEvents && data.savedEvents.length > 0 && (
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4 flex justify-between items-center">
-            Saved Events
+          {t("SavedEvents")}
           </h2>
           <ul className="list-disc pl-6 space-y-4">
             {data.savedEvents.map((event, index) => (
@@ -106,9 +108,9 @@ export default function SearchResultPage() {
                   className="mr-2"
                 />
                 <div>
-                  <p><strong>Title:</strong> {event.title}</p>
-                  <p><strong>Label:</strong> {event.label}</p>
-                  <p><strong>Day:</strong> {new Date(event.day).toDateString()}</p>
+                  <p><strong>{t("Title")}:</strong> {event.title}</p>
+                  <p><strong>{t("Label")}:</strong> {event.label}</p>
+                  <p><strong>{t("Day")}:</strong> {new Date(event.day).toDateString()}</p>
                 </div>
               </li>
             ))}
@@ -117,7 +119,7 @@ export default function SearchResultPage() {
               onClick={handleLogCheckedEvents}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
             >
-              Add events to your account
+              {t("Addeventstoyouraccount")}
           </button>
         </div>
       )}
@@ -125,7 +127,7 @@ export default function SearchResultPage() {
       {data.savedTasks && data.savedTasks.length > 0 && (
         <div>
           <h2 className="text-2xl font-semibold mb-4 flex justify-between items-center">
-            Saved Tasks
+          {t("SavedTasks")}
           </h2>
           <ul className="list-disc pl-6 space-y-4">
             {data.savedTasks.map((task, index) => (
@@ -136,10 +138,10 @@ export default function SearchResultPage() {
                   className="mr-2"
                 />
                 <div>
-                  <p><strong>Title:</strong> {task.title}</p>
-                  <p><strong>Date:</strong> {new Date(task.date).toDateString()}</p>
-                  <p><strong>Start Time:</strong> {task.startTime}</p>
-                  <p><strong>End Time:</strong> {task.endTime}</p>
+                  <p><strong>{t("Title")}:</strong> {task.title}</p>
+                  <p><strong>{t("Date")}:</strong> {new Date(task.date).toDateString()}</p>
+                  <p><strong>{t("StartTime")}:</strong> {task.startTime}</p>
+                  <p><strong>{t("End Time")}:</strong> {task.endTime}</p>
                 </div>
               </li>
             ))}
@@ -148,7 +150,7 @@ export default function SearchResultPage() {
               onClick={handleLogCheckedTasks}
               className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
             >
-              Add tasks to your account
+              {t("Addtaskstoyouraccount")}
             </button>
         </div>
       )}

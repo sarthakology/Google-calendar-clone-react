@@ -165,10 +165,10 @@ const ProfilePage = () => {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option value="">{t("SelectGender")}</option>
+                <option value="Male">{t("Male")}</option>
+                <option value="Female">{t("Female")}</option>
+                <option value="Other">{t("Other")}</option>
               </select>
             ) : (
               <p className="mt-1 text-gray-900">{gender || "N/A"}</p>
@@ -213,15 +213,15 @@ const ProfilePage = () => {
 
           {/* Account Status input */}
           <div>
-            <span className="block text-sm font-medium text-gray-700">Account Status:</span>
+            <span className="block text-sm font-medium text-gray-700">{t("AccountStatus")}:</span>
             {isEditing ? (
               <select
                 className="mt-1 w-full border rounded px-3 py-2"
                 value={accountStatus}
                 onChange={(e) => setAccountStatus(e.target.value)}
               >
-                <option value="Private">Private</option>
-                <option value="Public">Public</option>
+                <option value="Private">{t("Private")}</option>
+                <option value="Public">{t("Public")}</option>
               </select>
             ) : (
               <p className="mt-1 text-gray-900">{accountStatus || "N/A"}</p>

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import API_URLS from '../ApiUrls';
 import { toast } from 'react-toastify';
+import { useTranslation } from "react-i18next";
 
 export default function RoleUpdateAdmin() {
+  const { t } = useTranslation();  
   const [users, setUsers] = useState([]);
   const [updatedRoles, setUpdatedRoles] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -51,14 +53,14 @@ export default function RoleUpdateAdmin() {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Manage User Roles</h2>
+      <h2 className="text-2xl font-bold mb-6">{t('manageUserRoles')}</h2>
       <table className="min-w-full bg-white">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">Email</th>
-            <th className="py-2 px-4 border-b">Current Role</th>
-            <th className="py-2 px-4 border-b">Update Role</th>
-            <th className="py-2 px-4 border-b">Action</th>
+            <th className="py-2 px-4 border-b">{t('email')}</th>
+            <th className="py-2 px-4 border-b">{t('currentRole')}</th>
+            <th className="py-2 px-4 border-b">{t('updateRole')}</th>
+            <th className="py-2 px-4 border-b">{t('action')}</th>
           </tr>
         </thead>
         <tbody>
@@ -72,8 +74,8 @@ export default function RoleUpdateAdmin() {
                   value={updatedRoles[user.email] || user.role}
                   onChange={(e) => handleRoleChange(user.email, e.target.value)}
                 >
-                  <option value="admin">Admin</option>
-                  <option value="user">User</option>
+                  <option value="admin">{t('admin')}</option>
+                  <option value="user">{t('user')}</option>
                 </select>
               </td>
               <td className="py-2 px-4 border-b">
@@ -81,7 +83,7 @@ export default function RoleUpdateAdmin() {
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                   onClick={() => handleSubmit(user.email)}
                 >
-                  Update Role
+                  {t('updateRoleButton')}
                 </button>
               </td>
             </tr>

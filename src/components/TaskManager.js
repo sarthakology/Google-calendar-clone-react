@@ -3,8 +3,10 @@ import GlobalContext from "../context/GlobalContext";
 import dayjs from "dayjs";
 import { toast } from 'react-toastify';
 import DeleteTask from "../services/DeleteTask";
+import {useTranslation} from "react-i18next";
 
 const TasksManager = () => {
+  const { t } = useTranslation();
   const { savedTasks, dispatchTask } = useContext(GlobalContext);
   const [taskInput, setTaskInput] = useState("");
   const [taskDate, setTaskDate] = useState("");
@@ -105,13 +107,13 @@ const TasksManager = () => {
           onClick={() => setShowTaskForm(true)}
           className="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition duration-200"
         >
-          Create Task
+          {t("CreateTask")}
         </button>
       </div>
 
       {/* Bottom - Task List */}
       <div className="w-full max-w-2xl p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Task Manager</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">{t("TaskManager")}</h2>
 
         <ul className="space-y-2">
           {savedTasks.map((task) => (
@@ -126,7 +128,7 @@ const TasksManager = () => {
                 </p>
                 <p className="text-gray-700">{task.description}</p>
                 <p className="text-gray-500">
-                  Reminder: {task.reminder === "No" ? "No Reminder" : `At ${task.reminder}`}
+                {t("Reminder")}: {task.reminder === "No" ? "No Reminder" : `At ${task.reminder}`}
                 </p>
               </div>
               <div>
@@ -134,13 +136,13 @@ const TasksManager = () => {
                   onClick={() => handleEditTask(task)}
                   className="bg-yellow-500 text-white font-semibold py-1 px-2 rounded-lg hover:bg-yellow-600 transition duration-200 mr-2"
                 >
-                  Edit
+                  {t("Edit")}
                 </button>
                 <button
                   onClick={() => handleDeleteTask(task.id)}
                   className="bg-red-500 text-white font-semibold py-1 px-2 rounded-lg hover:bg-red-600 transition duration-200"
                 >
-                  Delete
+                  {t("Delete")}
                 </button>
               </div>
             </li>
@@ -177,13 +179,13 @@ const TasksManager = () => {
                 onChange={handleAllDayToggle}
                 className="mr-2"
               />
-              <label className="text-gray-700">All Day</label>
+              <label className="text-gray-700">{t("AllDay")}</label>
             </div>
 
             {!isAllDay && (
               <>
                 <div className="flex items-center mb-2">
-                  <label className="mr-2 text-gray-700">Start Time</label>
+                  <label className="mr-2 text-gray-700">{t("Start Time")}</label>
                   <input
                     type="time"
                     value={taskStartTime}
@@ -193,7 +195,7 @@ const TasksManager = () => {
                 </div>
 
                 <div className="flex items-center mb-2">
-                  <label className="mr-2 text-gray-700">End Time</label>
+                  <label className="mr-2 text-gray-700">{t("EndTime")}</label>
                   <input
                     type="time"
                     value={taskEndTime}
@@ -211,7 +213,7 @@ const TasksManager = () => {
                 onChange={() => setReminder(!reminder)}
                 className="mr-2"
               />
-              <label className="text-gray-700">Set Reminder</label>
+              <label className="text-gray-700">{t("SetReminder")}</label>
             </div>
 
             <textarea
@@ -226,7 +228,7 @@ const TasksManager = () => {
                 onClick={() => setShowTaskForm(false)}
                 className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 mr-2"
               >
-                Cancel
+                {t("Cancel")}
               </button>
               <button
                 onClick={editingTask ? handleUpdateTask : handleAddTask}

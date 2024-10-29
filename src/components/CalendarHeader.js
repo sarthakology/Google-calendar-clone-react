@@ -109,24 +109,21 @@ export default function CalendarHeader() {
           <div className="absolute right-16 top-12 bg-white border rounded shadow-lg p-2 w-64">
             <ul>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/help" className="block w-full h-full">{t("help")}</Link>
-              </li>
-              <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/training" className="block w-full h-full">{t("training")}</Link>
+                <Link to="https://cdac.in/index.aspx?id=help" className="block w-full h-full">{t("help")}</Link>
               </li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
                 <Link to="/updates" className="block w-full h-full">{t("updates")}</Link>
               </li>
               <li><hr className="border-t border-gray-300 my-2" /></li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/feedback" className="block w-full h-full">{t("sendfeedbacktoCDAC")}</Link>
+                <Link to="https://cdac.in/index.aspx?id=reach_us" className="block w-full h-full">{t("sendfeedbacktoCDAC")}</Link>
               </li>
             </ul>
           </div>
         )}
 
         {settingsDropdown && (
-          <div className="absolute right-16 top-12 bg-white border rounded shadow-lg p-2 w-64">
+          <div className="absolute right-5 top-12 bg-white border rounded shadow-lg p-2 w-64">
             <ul>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
                 <Link to="/setting" className="block w-full h-full">{t("settings")}</Link>
@@ -136,17 +133,12 @@ export default function CalendarHeader() {
               </li>
               <li><hr className="border-t border-gray-300 my-2" /></li>
               <li className="p-2 hover:bg-gray-100 cursor-pointer">
-                <Link to="/DensityAndColor" className="block w-full h-full">{t("densityandcolor")}</Link>
-              </li>
-              <li><hr className="border-t border-gray-300 my-2" /></li>
-              <li className="p-2 hover:bg-gray-100 cursor-pointer">
                 <Link to="/Get-add-ons" className="block w-full h-full">{t("getaddons")}</Link>
               </li>
             </ul>
           </div>
         )}
       </div>
-
       <div className="flex p-1 relative items-center w-30">
         <div className="w-full flex justify-center">
           <button 
