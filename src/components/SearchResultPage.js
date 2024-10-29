@@ -63,11 +63,12 @@ export default function SearchResultPage() {
     toast.success('Events added to your Account Successfully!');
   };
   
-    
   const handleLogCheckedTasks = () => {
-    checkedTasks.forEach(task => {
-      dispatchTask({ type: "add", payload: task });
+    checkedTasks.forEach((task) => {
+      const newTask = { ...task, id: Date.now() + Math.random() };
+      dispatchTask({ type: "add", payload: newTask });
     });
+    
     toast.success('Tasks added to your Account Successfully!');
   };
 

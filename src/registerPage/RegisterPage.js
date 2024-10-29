@@ -99,7 +99,7 @@ export default function RegisterPage() {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="terms" className="font-light text-gray-500">
-                  {t("iacceptthe")}<Link to="/terms" className="font-medium text-primary-600 hover:underline">{t("termsandConditions")}</Link>
+                  {t("iacceptthe")}<Link to="https://cdac.in/index.aspx?id=terms_conditions" className="font-medium text-primary-600 hover:underline">{t("termsandConditions")}</Link>
                   </label>
                 </div>
               </div>
