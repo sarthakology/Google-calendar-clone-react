@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
 import dayjs from "dayjs";
 import { toast } from 'react-toastify';
-import DeleteTask from "../services/DeleteTask";
 import {useTranslation} from "react-i18next";
 
 const TasksManager = () => {
@@ -94,7 +93,6 @@ const TasksManager = () => {
 
   const handleDeleteTask = (id) => {
     dispatchTask({ type: "delete", payload: { id } });
-    DeleteTask(id)
     toast.success('Task Deleted Successfully!');
   };
 

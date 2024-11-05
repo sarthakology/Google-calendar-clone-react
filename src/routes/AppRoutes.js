@@ -7,9 +7,7 @@ import EventModal from "../components/EventModal";
 import EventsPage from "../components/EventsPage";
 import GlobalContext from "../context/GlobalContext";
 import { getMonth } from "../util";
-import UpdatesPage from "../SupportPages/UpdatesPage";
 import MainSettingsPage from "../settings/MainSettingsPage";
-import TrashPage from "../settings/TrashPage";
 import DensityAndColorPage from "../settings/DensityAndColorPage";
 import GetAddonsPage from "../settings/GetAddonsPage";
 import RegisterPage from "../registerPage/RegisterPage";
@@ -101,12 +99,9 @@ const AppRoutes = () => {
 
         {/* Admin */}
         <Route path="/admin" element={<><CalendarHeader /><Admin/> </>} />
-        {/* Support Pages */}
-        <Route path="/updates" element={<><CalendarHeader /><UpdatesPage /></>} />
 
         {/* Settings Pages */}
         <Route path="/setting" element={<><CalendarHeader /><MainSettingsPage /></>} />
-        <Route path="/trash" element={<><CalendarHeader /><TrashPage /></>} />
         <Route path="/DensityAndColor" element={<><CalendarHeader /><DensityAndColorPage /></>} />
         <Route path="/Get-add-ons" element={<><CalendarHeader /><GetAddonsPage /></>} />
 

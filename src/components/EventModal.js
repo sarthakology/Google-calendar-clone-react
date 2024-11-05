@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import GlobalContext from "../context/GlobalContext";
-import DeleteEvent from "../services/DeleteEvent";
 import { useTranslation } from "react-i18next";
 
 const labelsClasses = ["indigo", "gray", "green", "blue", "red", "purple"];
@@ -55,7 +54,6 @@ export default function EventModal() {
     }
   
     function handelDelete() {
-      DeleteEvent(selectedEvent.id);
       dispatchCalEvent({ type: "delete", payload: selectedEvent });
       setShowEventModal(false);
     }
