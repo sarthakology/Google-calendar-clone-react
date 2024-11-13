@@ -30,13 +30,13 @@ export default function SearchBox() {
     };
 
     return (
-        <div className="flex items-center border border-gray-300 rounded-full bg-white shadow-md w-[200px] h-[40px]">
+        <div className="flex items-center border border-gray-300 rounded-full bg-white shadow-md w-[200px] h-[40px] outline-none">
             <input
                 type="email"
                 placeholder={`${t("search")}...`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-grow border-none bg-transparent px-3 py-2 text-gray-700 placeholder-gray-400 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500 h-full"
+                className="flex-grow border-none bg-transparent px-3 py-2 text-gray-700 placeholder-gray-400 rounded-l-full focus:outline-none h-full"
             />
             <button
                 className="flex items-center justify-center w-10 h-full bg-blue-500 rounded-r-full hover:bg-blue-600 transition duration-200 -ml-10"
